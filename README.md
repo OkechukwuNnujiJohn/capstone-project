@@ -38,3 +38,8 @@ This repository contains the code for a transportation website <b>(PaceR)</b> th
 10. As a user, I want the website to have a rating and review system for drivers, so that I can provide feedback and help maintain a reliable and safe transportation service.
 
 These user stories cover various aspects of the transportation website, including ride requests, navigation, alternative routes, public transportation integration, user preferences, language support, user experience, cost transparency, and feedback mechanisms.
+
+### Figma Wireframe PDF
+
+### [CapstoneProject.pdf](https://github.com/OkechukwuNnujiJohn/capstone-project/files/11891024/CapstoneProject.pdf)
+
