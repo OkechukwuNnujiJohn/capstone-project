@@ -1,4 +1,4 @@
-# PROJECT: Online shipping website
+# PROJECT: J.Thrift (Online shipping website)
 ### Problem Statement 1:
 "A website that lacks a convenient platform for users to sell their own vintage clothes, hindering the growth of the online thrift clothing community."
 
