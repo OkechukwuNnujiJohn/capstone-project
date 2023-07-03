@@ -40,7 +40,7 @@ Pain Points: Limited availability of quality vintage clothing in local thrift st
 #### Age: 35
 Technology Access/Sophistication: Comfortable using both computers and smartphones, regularly engages in online shopping.
 Motivation: John is a fashion enthusiast who enjoys experimenting with different styles. He appreciates the authenticity and history behind vintage clothing and is eager to find unique pieces to add to his wardrobe.
-# Pain Points: Limited time for physically visiting thrift stores, lack of a convenient platform to browse and purchase vintage clothes.
+Pain Points: Limited time for physically visiting thrift stores, lack of a convenient platform to browse and purchase vintage clothes.
 
 ## Seller Persona 1:
 #### Name: Sarah
