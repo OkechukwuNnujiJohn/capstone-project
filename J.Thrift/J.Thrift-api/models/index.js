@@ -7,7 +7,7 @@ import { sequelize } from '../database.js';
 
 User.hasOne(Cart, { as: 'carts', foreignKey: 'userId' });
 Cart.belongsTo(User, { as: 'user', foreignKey: 'userId' });
-
+// association for the cart and items
 Cart.belongsToMany(Item, { through: CartItem, foreignKey: 'cartId' });
 Item.belongsToMany(Cart, { through: CartItem, foreignKey: 'itemId' });
 
