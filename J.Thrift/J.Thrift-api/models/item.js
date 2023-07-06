@@ -1,40 +1,48 @@
-// models/user.js
+// models/post.js
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
 
-export const User = sequelize.define('User', {
+export const Item = sequelize.define('Item', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
-  first_name: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  last_name: {
+  category: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
   },
   gender: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
-  password: {
+  brand: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  favoriteColors: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+  image: {
+    type: DataTypes.STRING,
     allowNull: false
   },
-  favoriteBrands: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+  price:{
+    type: DataTypes.FLOAT,
+    allowNull:false
+  },
+  description:{
+    type: DataTypes.TEXT,
+    allowNull:false
+  },
+  color: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  cartId: {
+    type: DataTypes.STRING,
     allowNull: false
   }
 });
+

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [posts, setPosts] = useState([]);
+  const [items, setItems] = useState([]);
   const [form, setForm] = useState({
     title: '',
     content: '',
@@ -10,12 +10,12 @@ function App() {
   });
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch('http://localhost:5000/posts');
+    const fetchItems = async () => {
+      const response = await fetch('http://localhost:3000/items');
       const data = await response.json();
-      setPosts(data);
+      setItems(data);
     };
-    fetchPosts();
+    fetchItems();
   }, []);
 
   const handleChange = (event) => {
@@ -27,13 +27,13 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch('http://localhost:5000/posts', {
+    const response = await fetch('http://localhost:3000/items', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     });
-    const newPost = await response.json();
-    setPosts([newPost, ...posts]);
+    const newItems = await response.json();
+    setItems([newItems, ...items]);
   };
 
   return (
@@ -61,15 +61,15 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
-      <div className="posts-container">
-        {posts.map((post) => (
-          <div className="post" key={post.id}>
-            <h2>{post.title}</h2>
+      {/* <div className="posts-container">
+        {items.map((item) => (
+          <div className="post" key={item.id}>
+            <h2>{item.title}</h2>
             <h4>By {post.user.username} at {new Date(post.createdAt).toLocaleString()}</h4>
             <p>{post.content}</p>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

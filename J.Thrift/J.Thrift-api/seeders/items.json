@@ -1,0 +1,200 @@
+[
+    {
+        "id": "1",
+        "name": "Men's T-Shirt",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Nike",
+        "image": "https://example.com/nike-tshirt.jpg",
+        "price": 29.99,
+        "description": "A comfortable and stylish t-shirt for men.",
+        "color": "Black"
+    },
+    {
+        "id": "2",
+        "name": "Women's Hoodie",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Carhartt",
+        "image": "https://example.com/carhartt-hoodie.jpg",
+        "price": 49.99,
+        "description": "A warm and durable hoodie for women.",
+        "color": "Gray"
+    },
+    {
+        "id": "3",
+        "name": "Men's Jeans",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Harley Davidson",
+        "image": "https://example.com/harley-jeans.jpg",
+        "price": 69.99,
+        "description": "Stylish and rugged jeans for men.",
+        "color": "Blue"
+    },
+    {
+        "id": "4",
+        "name": "Women's Leggings",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Stussy",
+        "image": "https://example.com/stussy-leggings.jpg",
+        "price": 39.99,
+        "description": "Comfortable and trendy leggings for women.",
+        "color": "Black"
+    },
+    {
+        "id": "5",
+        "name": "Men's Sneakers",
+        "category": "Footwear",
+        "gender": "Male",
+        "brand": "Adidas",
+        "image": "https://example.com/adidas-sneakers.jpg",
+        "price": 79.99,
+        "description": "Stylish and comfortable sneakers for men.",
+        "color": "White"
+    },
+    {
+        "id": "6",
+        "name": "Women's Running Shoes",
+        "category": "Footwear",
+        "gender": "Female",
+        "brand": "Polo",
+        "image": "https://example.com/polo-running-shoes.jpg",
+        "price": 89.99,
+        "description": "Lightweight and supportive running shoes for women.",
+        "color": "Pink"
+    },
+    {
+        "id": "7",
+        "name": "Men's Polo Shirt",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Ralph Lauren",
+        "image": "https://example.com/ralph-lauren-polo.jpg",
+        "price": 59.99,
+        "description": "Classic and stylish polo shirt for men.",
+        "color": "Blue"
+    },
+    {
+        "id": "8",
+        "name": "Women's Dress",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Nike",
+        "image": "https://example.com/nike-dress.jpg",
+        "price": 79.99,
+        "description": "A comfortable and elegant dress for women.",
+        "color": "Red"
+    },
+    {
+        "id": "9",
+        "name": "Men's Jacket",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Carhartt",
+        "image": "https://example.com/carhartt-jacket.jpg",
+        "price": 99.99,
+        "description": "A durable and warm jacket for men.",
+        "color": "Brown"
+    },
+    {
+        "id": "10",
+        "name": "Women's Sweatshirt",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Stussy",
+        "image": "https://example.com/stussy-sweatshirt.jpg",
+        "price": 59.99,
+        "description": "A cozy and stylish sweatshirt for women.",
+        "color": "Black"
+    },
+    {
+        "id": "11",
+        "name": "Men's Shorts",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Adidas",
+        "image": "https://example.com/adidas-shorts.jpg",
+        "price": 39.99,
+        "description": "Comfortable and lightweight shorts for men.",
+        "color": "Gray"
+    },
+    {
+        "id": "12",
+        "name": "Women's Blouse",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Polo",
+        "image": "https://example.com/polo-blouse.jpg",
+        "price": 49.99,
+        "description": "A stylish and versatile blouse for women.",
+        "color": "White"
+    },
+    {
+        "id": "13",
+        "name": "Men's Swim Trunks",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Ralph Lauren",
+        "image": "https://example.com/ralph-lauren-swim-trunks.jpg",
+        "price": 69.99,
+        "description": "Stylish and comfortable swim trunks for men.",
+        "color": "Blue"
+    },
+    {
+        "id": "14",
+        "name": "Women's Skirt",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Nike",
+        "image": "https://example.com/nike-skirt.jpg",
+        "price": 59.99,
+        "description": "A trendy and sporty skirt for women.",
+        "color": "Black"
+    },
+    {
+        "id": "15",
+        "name": "Men's Sweatpants",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Carhartt",
+        "image": "https://example.com/carhartt-sweatpants.jpg",
+        "price": 79.99,
+        "description": "Comfortable and durable sweatpants for men.",
+        "color": "Gray"
+    },
+    {
+        "id": "16",
+        "name": "Women's Jacket",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Stussy",
+        "image": "https://example.com/stussy-jacket.jpg",
+        "price": "99.99",
+        "description": "A stylish and versatile jacket for women.",
+        "color": "Black"
+    },
+    {
+        "id": "17",
+        "name": "Men's Button-Down Shirt",
+        "category": "Clothing",
+        "gender": "Male",
+        "brand": "Adidas",
+        "image": "https://example.com/adidas-button-down.jpg",
+        "price": 89.99,
+        "description": "A classic and stylish button-down shirt for men.",
+        "color": "White"
+    },
+    {
+        "id": "18",
+        "name": "Women's Jeans",
+        "category": "Clothing",
+        "gender": "Female",
+        "brand": "Polo",
+        "image": "https://example.com/polo-jeans.jpg",
+        "price": 69.99,
+        "description": "Comfortable and stylish jeans for women.",
+        "color": "Blue"
+    } 
+]

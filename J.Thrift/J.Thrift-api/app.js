@@ -3,7 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import { sequelize } from './database.js';
-import { User, Post } from './models/index.js';
+import { User, Cart,  Item  } from './models/index.js';
+
+
 // import { User, Post } from './models/index.js';
 
 const app = express();
@@ -21,56 +23,104 @@ app.get('/users', async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   });
+  //Route to get all Items
+  app.get('/items', async (req, res) => {
+    try {
+      const items = await Item.findAll();
+      res.json(items);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+  //Route to get all Cart
+  app.get('/carts', async (req, res) => {
+    try {
+      const carts = await Cart.findAll();
+      res.json(carts);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+//   // Route to get a user by id
+// app.get('/users/:id', async (req, res) => {
+//   const userId = req.params.id;
+
+//   try {
+//     const user = await User.findByPk(userId, {
+//       include: [
+//         {
+//           model: Cart,
+//           as: 'carts',
+//           include: [
+//             {
+//               model: Item,
+//               through: { attributes: [] } // To exclude the join table attributes from the result
+//             }
+//           ]
+//         }
+//       ]
+//     });
+
+//     if (user) {
+//       res.json(user);
+//     } else {
+//       res.status(404).json({ message: 'User not found' });
+//     }
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
 
 // Route to get a user by id
-app.get('/users/:id', async (req, res) => {
-    try {
-      const user = await User.findByPk(req.params.id);
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ message: 'User not found' });
-      }
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  });
+// app.get('/users/:id', async (req, res) => {
+//     try {
+//       const user = await User.findByPk(req.params.id);
+//       if (user) {
+//         res.json(user);
+//       } else {
+//         res.status(404).json({ message: 'User not found' });
+//       }
+//     } catch (err) {
+//       res.status(500).json({ message: err.message });
+//     }
+//   });
 
 // Route to get all posts, with associated users
-app.get('/posts', async (req, res) => {
-    try {
-      const posts = await Post.findAll({
-        include: [{ model: User, as: 'user' }],
-        order: [['createdAt', 'DESC']]
-      });
-      res.json(posts);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  });
+// app.get('/item', async (req, res) => {
+//     try {
+//       const items = await Post.findAll({
+//         include: [{ model: User, as: 'user' }],
+//         order: [['createdAt', 'DESC']]
+//       });
+//       res.json(posts);
+//     } catch (err) {
+//       res.status(500).json({ message: err.message });
+//     }
+//   });
 
 // Route to create a new post
-app.post('/posts', async (req, res) => {
-    try {
-      const post = await Post.create(req.body);
+// app.post('/posts', async (req, res) => {
+//     try {
+//       const post = await Post.create(req.body);
   
-      const postWithUser = await Post.findOne({
-        where: { id: post.id },
-        include: [{ model: User, as: 'user' }]
-      });
+//       const postWithUser = await Post.findOne({
+//         where: { id: post.id },
+//         include: [{ model: User, as: 'user' }]
+//       });
   
-      res.status(201).json(postWithUser);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  });
+//       res.status(201).json(postWithUser);
+//     } catch (err) {
+//       res.status(500).json({ message: err.message });
+//     }
+//   });
   
 
 // Set up Express, middleware, routes, etc. here
 
 sequelize.sync({ alter: true })
   .then(() => {
-    const port = 5000;
+    const port = 3000;
     app.listen(port, () => {
       console.log(`App is listening on port ${port}`);
     });

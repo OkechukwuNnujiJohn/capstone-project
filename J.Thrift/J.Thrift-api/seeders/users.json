@@ -1,52 +1,92 @@
 [
     {
-        "username": "JohnDoe91",
-        "email": "johndoe91@example.com",
-        "password": "p@ssw0rd1"
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@example.com",
+        "gender": "male",
+        "password": "password123",
+        "favoriteColors": ["blue", "green"],
+        "favoriteBrands": ["Nike", "Carhartt"]
     },
     {
-        "username": "EmilySmith",
-        "email": "emilysmith@example.com",
-        "password": "p@ssw0rd2"
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "email": "alice.smith@example.com",
+        "gender": "female",
+        "password": "passw0rd",
+        "favoriteColors": ["red", "yellow"],
+        "favoriteBrands": ["Stussy", "Adidas"]
     },
     {
-        "username": "DavidJohnson",
-        "email": "davidjohnson@example.com",
-        "password": "p@ssw0rd3"
+        "first_name": "Michael",
+        "last_name": "Johnson",
+        "email": "michael.johnson@example.com",
+        "gender": "male",
+        "password": "securepass",
+        "favoriteColors": ["black", "white"],
+        "favoriteBrands": ["Polo", "Ralph Lauren"]
     },
     {
-        "username": "SarahAdams",
-        "email": "sarahadams@example.com",
-        "password": "p@ssw0rd4"
+        "first_name": "Emily",
+        "last_name": "Brown",
+        "email": "emily.brown@example.com",
+        "gender": "female",
+        "password": "mypassword",
+        "favoriteColors": ["purple", "pink"],
+        "favoriteBrands": ["Nike", "Carhartt"]
     },
     {
-        "username": "MichaelBrown",
-        "email": "michaelbrown@example.com",
-        "password": "p@ssw0rd5"
+        "first_name": "Daniel",
+        "last_name": "Wilson",
+        "email": "daniel.wilson@example.com",
+        "gender": "male",
+        "password": "12345678",
+        "favoriteColors": ["orange", "brown"],
+        "favoriteBrands": ["Harley Davidson", "Stussy"]
     },
     {
-        "username": "OliviaDavis",
-        "email": "oliviadavis@example.com",
-        "password": "p@ssw0rd6"
+        "first_name": "Sophia",
+        "last_name": "Johnson",
+        "email": "sophia.johnson@example.com",
+        "gender": "female",
+        "password": "qwerty",
+        "favoriteColors": ["green", "blue"],
+        "favoriteBrands": ["Adidas", "Polo"]
     },
     {
-        "username": "DanielWilson",
-        "email": "danielwilson@example.com",
-        "password": "p@ssw0rd7"
+        "first_name": "Matthew",
+        "last_name": "Davis",
+        "email": "matthew.davis@example.com",
+        "gender": "male",
+        "password": "password123",
+        "favoriteColors": ["red", "yellow"],
+        "favoriteBrands": ["Ralph Lauren", "Nike"]
     },
     {
-        "username": "SophiaMiller",
-        "email": "sophiamiller@example.com",
-        "password": "p@ssw0rd8"
+        "first_name": "Olivia",
+        "last_name": "Anderson",
+        "email": "olivia.anderson@example.com",
+        "gender": "female",
+        "password": "passw0rd",
+        "favoriteColors": ["black", "white"],
+        "favoriteBrands": ["Stussy", "Adidas"]
     },
     {
-        "username": "JamesTaylor",
-        "email": "jamestaylor@example.com",
-        "password": "p@ssw0rd9"
+        "first_name": "James",
+        "last_name": "Taylor",
+        "email": "james.taylor@example.com",
+        "gender": "male",
+        "password": "securepass",
+        "favoriteColors": ["purple", "pink"],
+        "favoriteBrands": ["Carhartt", "Polo"]
     },
     {
-        "username": "AvaAnderson",
-        "email": "avaanderson@example.com",
-        "password": "p@ssw0rd10"
+        "first_name": "Emma",
+        "last_name": "Martin",
+        "email": "emma.martin@example.com",
+        "gender": "female",
+        "password": "mypassword",
+        "favoriteColors": ["orange", "brown"],
+        "favoriteBrands": ["Stussy", "Ralph Lauren"]
     }
 ]
