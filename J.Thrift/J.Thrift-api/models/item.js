@@ -3,11 +3,11 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
 
 export const Item = sequelize.define('Item', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
+  // id: {
+  //   type: DataTypes.INTEGER,
+  //   autoIncrement: true,
+  //   primaryKey: true
+  // },
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -37,10 +37,6 @@ export const Item = sequelize.define('Item', {
     allowNull:false
   },
   color: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  cartId: {
     type: DataTypes.STRING,
     allowNull: false
   }

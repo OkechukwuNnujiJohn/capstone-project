@@ -1,27 +1,22 @@
 [
     {
         "quantity": "2",
-        "userId": "1",
-        "items": ["3", "8", "11", "16"]
+        "userId": "1"
     },
     {
         "quantity": "1",
-        "userId": "2",
-        "items": ["5", "7", "12", "16"]
+        "userId": "2"
     },
     {
         "quantity": "3",
-        "userId": "3",
-        "items": ["1", "6", "13", "18"]
+        "userId": "3"
     },
     {
         "quantity": "1",
-        "userId": "4",
-        "items": ["4", "9", "14"]
+        "userId": "4"
     },
     {
         "quantity": "2",
-        "userId": "5",
-        "items": ["2", "10", "15"]
+        "userId": "5"
     }
 ]
