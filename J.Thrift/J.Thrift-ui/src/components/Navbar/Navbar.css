@@ -1,0 +1,84 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    z-index: 2;
+  }
+  
+  .logo {
+    position: relative;
+    margin-left: 10rem;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .navbar-icons {
+    margin-top: 30px;
+    margin-left: 100px;
+    position: relative;
+    display: flex;
+    right: 30px;
+    gap: 30px;
+  }
+  
+  .navbar-links {
+    position: relative;
+    right: 100px;
+    margin-right: 12rem;
+    display: flex;
+    gap: 10px;
+    font-weight: bold;
+  }
+  
+  .NavbarLogo {
+    display: flex;
+  }
+  
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  /* Styling for the checkboxes */
+  input[type="checkbox"] {
+    /* Hide the default checkbox */
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  /* Styling for the custom checkbox */
+  .checkbox-custom {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #999999;
+    border-radius: 3px;
+    background-color: #ffffff;
+  }
+  
+   /* Styling for the tick symbol */
+   .checkbox-custom::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border: 2px solid #333333;
+    border-top: none;
+    border-right: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  
+  /* Styling for the tick when checkbox is checked */
+  .checkbox-custom input[type="checkbox"]:checked + .checkbox-custom::after {
+    opacity: 1;
+  }
+  

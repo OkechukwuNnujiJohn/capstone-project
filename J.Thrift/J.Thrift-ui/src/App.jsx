@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { UserContext } from './UserContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import Main from './components/Main/Main'
+import Main from './components/Main/Main'
 import LoginForm from './components/LoginForm/LoginForm';
 import SignupForm from './components/SignupForm/SignupForm';
 
@@ -10,7 +10,9 @@ function App() {
 
   const [user, setUser] = useState(() => {
     // Retrieve the user data from storage or set it to null if not found
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem('User');
+    // console.log("user",user);
+    // console.log("stored user",storedUser);
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
@@ -28,8 +30,8 @@ function App() {
       <UserContext.Provider value={{ user, updateUser }}>
         <BrowserRouter>
           <Routes>
-            {/* <Route path="/" element={ <Main /> } /> */}
-            <Route path="/" element={user ? <Main /> : <LoginForm />} />
+            <Route path="/" element={ <Main /> } />
+            {/* <Route path="/" element={user ? <Main /> : <LoginForm />} /> */}
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
           </Routes>

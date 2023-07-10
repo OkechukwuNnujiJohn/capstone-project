@@ -1,11 +1,18 @@
 import "./Main.css"
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext} from "react";
 import { UserContext } from "../../UserContext.js";
 import { Link } from "react-router-dom";
+import Navbar from "../Navbar/Navbar"
 
 function Main() {
     const { user, updateUser } = useContext(UserContext);
     const [items, setItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    // const linkElement = document.createElement("a");
+    
+
+    // const navigate = useNavigate();
     // const [form, setForm] = useState({
     //   title: '',
     //   content: '',
@@ -17,6 +24,7 @@ function Main() {
         const response = await fetch('http://localhost:3000/items');
         const data = await response.json();
         setItems(data);
+        setFilteredItems(data);
       };
       fetchItems();
     }, []);
@@ -40,6 +48,20 @@ function Main() {
     //   setPosts([newPost, ...posts]);
     // };
 
+    const handleCategorySelection = (category) => {
+        if (selectedCategories.includes(category)) {
+          setSelectedCategories(selectedCategories.filter((c) => c !== category));
+        } else {
+          setSelectedCategories([...selectedCategories, category]);
+        }
+    
+        const filtered = items.filter(
+          (item) =>
+            selectedCategories.length === 0 || selectedCategories.includes(item.brand)
+        );
+        setFilteredItems(filtered);
+      };
+
     const handleLogout = () => {
       // Perform logout logic here
       // Example: Clear user data from localStorage, reset user state, etc.
@@ -49,10 +71,11 @@ function Main() {
     return (
       <div className="main">
       <header className="header">
+        <Navbar handleCategorySelection={handleCategorySelection} />
         <div className="user-info">
           {user ? (
             <>
-              <span>Hi {user.username}! |</span>
+              <span>Hi {user.user_name}! |</span>
               <button onClick={handleLogout}>Logout</button>
             </>
           ) : (
@@ -77,14 +100,19 @@ function Main() {
             <button type="submit">Submit</button>
         </form> */}
         <div className="items-container">
-          {items.map((item) => (
-          <div className="post" key={item.id}>
+        {filteredItems.map((item) => (
+          <div className="item" key={item.id}>
+            <div className="item-details">
               <h2>{item.name}</h2>
-              <h4>By {item.brand} at {new Date(item.createdAt).toLocaleString()}</h4>
-              <p>{item.description}</p>
+              <h4>By {item.brand}</h4>
+            </div>
+            <div className="item-image">
+              <img src={item.image} alt={item.name} />
+            </div>
           </div>
-          ))}
-        </div>
+        ))}
+            </div>
+
       </div>
     )
 }
