@@ -2,21 +2,22 @@
     {
         "id": "1",
         "name": "Men's T-Shirt",
-        "category": "Clothing",
+        "category": "tops",
         "gender": "Male",
         "brand": "Nike",
-        "image": "https://example.com/nike-tshirt.jpg",
+        "image": "https://storeroomvintage.co/cdn/shop/products/0K5A7608_02f68c71-02b7-46be-b453-3de7ed338ddf_600x.jpg?v=1617002416",
         "price": 29.99,
         "description": "A comfortable and stylish t-shirt for men.",
         "color": "Black"
+        
     },
     {
         "id": "2",
         "name": "Women's Hoodie",
-        "category": "Clothing",
+        "category": "tops",
         "gender": "Female",
         "brand": "Carhartt",
-        "image": "https://example.com/carhartt-hoodie.jpg",
+        "image": "https://travsoutfitter.com/cdn/shop/products/104922_W03_WF21_e_2000x.jpg?v=1660244285",
         "price": 49.99,
         "description": "A warm and durable hoodie for women.",
         "color": "Gray"
@@ -24,21 +25,21 @@
     {
         "id": "3",
         "name": "Men's Jeans",
-        "category": "Clothing",
+        "category": "bottoms",
         "gender": "Male",
         "brand": "Harley Davidson",
-        "image": "https://example.com/harley-jeans.jpg",
+        "image": "https://houseofharley.com/images/P/99026-07VM_01front.JPG",
         "price": 69.99,
         "description": "Stylish and rugged jeans for men.",
         "color": "Blue"
     },
     {
         "id": "4",
-        "name": "Women's Leggings",
-        "category": "Clothing",
+        "name": "Women's Cargo Pants",
+        "category": "bottoms",
         "gender": "Female",
         "brand": "Stussy",
-        "image": "https://example.com/stussy-leggings.jpg",
+        "image": "https://cdn.shopify.com/s/files/1/0087/6193/3920/products/116550_BA22_1_ebd55e78-2273-408a-b610-33b37a80ac64.jpg?v=1683590897",
         "price": 39.99,
         "description": "Comfortable and trendy leggings for women.",
         "color": "Black"
@@ -46,21 +47,21 @@
     {
         "id": "5",
         "name": "Men's Sneakers",
-        "category": "Footwear",
+        "category": "Shoes",
         "gender": "Male",
         "brand": "Adidas",
-        "image": "https://example.com/adidas-sneakers.jpg",
+        "image": "https://goodhoodstore.com/cdn/shop/products/P88807_F_ADIDAS-SAMBA-OG---CLOUD-WHITE-CORE-BLACK-CLEAR-GRANITE_AW22_GOODHOOD__17145.jpg?v=1674817966",
         "price": 79.99,
         "description": "Stylish and comfortable sneakers for men.",
         "color": "White"
     },
     {
         "id": "6",
-        "name": "Women's Running Shoes",
-        "category": "Footwear",
+        "name": "Women's loafers",
+        "category": "Shoes",
         "gender": "Female",
         "brand": "Polo",
-        "image": "https://example.com/polo-running-shoes.jpg",
+        "image": "https://cdna.lystit.com/520/650/n/photos/mytheresa/1fdb7bc4/jimmy-choo-pink-Bryer-Patent-Leather-Loafers.jpeg",
         "price": 89.99,
         "description": "Lightweight and supportive running shoes for women.",
         "color": "Pink"
@@ -68,10 +69,10 @@
     {
         "id": "7",
         "name": "Men's Polo Shirt",
-        "category": "Clothing",
+        "category": "Tops",
         "gender": "Male",
         "brand": "Ralph Lauren",
-        "image": "https://example.com/ralph-lauren-polo.jpg",
+        "image": "https://cdn.shopify.com/s/files/1/0312/6537/files/corporate-ralph-lauren-golf-quarter-zips.jpg?v=1634933689",
         "price": 59.99,
         "description": "Classic and stylish polo shirt for men.",
         "color": "Blue"
@@ -79,7 +80,7 @@
     {
         "id": "8",
         "name": "Women's Dress",
-        "category": "Clothing",
+        "category": "allbody",
         "gender": "Female",
         "brand": "Nike",
         "image": "https://example.com/nike-dress.jpg",
@@ -90,10 +91,10 @@
     {
         "id": "9",
         "name": "Men's Jacket",
-        "category": "Clothing",
+        "category": "outerwear",
         "gender": "Male",
         "brand": "Carhartt",
-        "image": "https://example.com/carhartt-jacket.jpg",
+        "image": "https://footdistrict.com/media/resize/2000x2500/catalog/product/4/2/42_4064958440925/carhartt-wip-detroit-mens-jacket-i031947-08w02-0.jpg",
         "price": 99.99,
         "description": "A durable and warm jacket for men.",
         "color": "Brown"
@@ -101,10 +102,10 @@
     {
         "id": "10",
         "name": "Women's Sweatshirt",
-        "category": "Clothing",
+        "category": "tops",
         "gender": "Female",
         "brand": "Stussy",
-        "image": "https://example.com/stussy-sweatshirt.jpg",
+        "image": "https://cdna.lystit.com/400/500/tr/photos/d2/dffc9a21/stussy--Basic-Crew-Black-In-Cotton.jpeg",
         "price": 59.99,
         "description": "A cozy and stylish sweatshirt for women.",
         "color": "Black"
@@ -112,10 +113,10 @@
     {
         "id": "11",
         "name": "Men's Shorts",
-        "category": "Clothing",
+        "category": "bottoms",
         "gender": "Male",
         "brand": "Adidas",
-        "image": "https://example.com/adidas-shorts.jpg",
+        "image": "https://i.ebayimg.com/images/g/bZcAAOSwAg9iyhCu/s-l1200.webp",
         "price": 39.99,
         "description": "Comfortable and lightweight shorts for men.",
         "color": "Gray"
@@ -123,10 +124,10 @@
     {
         "id": "12",
         "name": "Women's Blouse",
-        "category": "Clothing",
+        "category": "allbody",
         "gender": "Female",
         "brand": "Polo",
-        "image": "https://example.com/polo-blouse.jpg",
+        "image": "https://i1.adis.ws/i/carhartt_wip/I031919_02_02-ST-01?$pop_slider_st_image_mobile$&img404=no_pic",
         "price": 49.99,
         "description": "A stylish and versatile blouse for women.",
         "color": "White"
@@ -134,10 +135,10 @@
     {
         "id": "13",
         "name": "Men's Swim Trunks",
-        "category": "Clothing",
+        "category": "bottoms",
         "gender": "Male",
         "brand": "Ralph Lauren",
-        "image": "https://example.com/ralph-lauren-swim-trunks.jpg",
+        "image": "https://cdna.lystit.com/400/500/tr/photos/cettire/c1a481df/polo-ralph-lauren-Navy-Logo-Patch-Drawstring-Swimming-Shorts.jpeg",
         "price": 69.99,
         "description": "Stylish and comfortable swim trunks for men.",
         "color": "Blue"
@@ -145,10 +146,10 @@
     {
         "id": "14",
         "name": "Women's Skirt",
-        "category": "Clothing",
+        "category": "bottoms",
         "gender": "Female",
         "brand": "Nike",
-        "image": "https://example.com/nike-skirt.jpg",
+        "image": "https://di2ponv0v5otw.cloudfront.net/posts/2023/07/01/64a0f4afb3ef629321dca321/s_64a0f50ab635f8db2ad27e12.jpeg",
         "price": 59.99,
         "description": "A trendy and sporty skirt for women.",
         "color": "Black"
@@ -156,10 +157,10 @@
     {
         "id": "15",
         "name": "Men's Sweatpants",
-        "category": "Clothing",
+        "category": "bottoms",
         "gender": "Male",
         "brand": "Carhartt",
-        "image": "https://example.com/carhartt-sweatpants.jpg",
+        "image": "https://i1.adis.ws/i/carhartt_wip/I032342_0R_XX-ST-01?$pop_slider_st_image_mobile$&img404=no_pic",
         "price": 79.99,
         "description": "Comfortable and durable sweatpants for men.",
         "color": "Gray"
@@ -167,10 +168,10 @@
     {
         "id": "16",
         "name": "Women's Jacket",
-        "category": "Clothing",
+        "category": "outerwear",
         "gender": "Female",
         "brand": "Stussy",
-        "image": "https://example.com/stussy-jacket.jpg",
+        "image": "https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/auto_image/cache=expiry:max/rotate=deg:exif/output=quality:20/no_metadata/compress/8c11G0lxSGmjDpg0YkeR",
         "price": "99.99",
         "description": "A stylish and versatile jacket for women.",
         "color": "Black"
@@ -178,10 +179,10 @@
     {
         "id": "17",
         "name": "Men's Button-Down Shirt",
-        "category": "Clothing",
+        "category": "tops",
         "gender": "Male",
         "brand": "Adidas",
-        "image": "https://example.com/adidas-button-down.jpg",
+        "image": "https://m.media-amazon.com/images/I/71abnYEKqML._AC_UX679_.jpg",
         "price": 89.99,
         "description": "A classic and stylish button-down shirt for men.",
         "color": "White"
@@ -189,10 +190,10 @@
     {
         "id": "18",
         "name": "Women's Jeans",
-        "category": "Clothing",
+        "category": "bottoms",
         "gender": "Female",
         "brand": "Polo",
-        "image": "https://example.com/polo-jeans.jpg",
+        "image": "https://cdn-images.farfetch-contents.com/18/97/58/29/18975829_42450356_1000.jpg",
         "price": 69.99,
         "description": "Comfortable and stylish jeans for women.",
         "color": "Blue"
