@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import logo from './logo.png';
-import { AiOutlineShoppingCart } from 'react-icons/Ai';
+import { AiOutlineShoppingCart, AiOutlineCheck} from 'react-icons/Ai';
+import {MdArrowDropDown} from 'react-icons/Md';
 
-export default function Navbar({ handleCategorySelection }) {
+
+export default function Navbar({ handleBrandSelection }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleCategoryClick = (category) => {
-    handleCategorySelection(category);
+  const handleBrandClick = (brand) => {
+    handleBrandSelection(brand);
+    console.log("b",brand);
   };
 
-  const isCategorySelected = (category) => {
-    return selectedCategories.includes(category);
+  const isBrandSelected = (brand) => {
+    return selectedBrands.includes(brand);
   };
 
   return (
@@ -38,51 +41,52 @@ export default function Navbar({ handleCategorySelection }) {
         </Link>
         <div className="navbar-link">
           <div className="dropdown-links" onClick={toggleDropdown}>
-            Categories
+            Categories <MdArrowDropDown/>
           </div>
           {isDropdownOpen && (
             <div className="navbar-dropdown-menu">
+                <label className="checkbox-label">
+                    <input
+                    type="checkbox"
+                    checked={isBrandSelected("Carhartt")}
+                    onChange={() => handleBrandClick("Carhartt")}
+                    />
+                    <span className="checkbox-custom"></span>
+                    Carhartt
+              </label> 
+
               <label className="checkbox-label">
                 <input
                   type="checkbox"
-                  checked={isCategorySelected("Carhartt")}
-                  onChange={() => handleCategoryClick("Carhartt")}
-                />
-                <span className="checkbox-custom"></span>
-                Carhartt
-              </label>
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={isCategorySelected("Harley Davidson")}
-                  onChange={() => handleCategoryClick("Harley Davidson")}
+                  checked={isBrandSelected("Harley Davidson")}
+                  onChange={() => handleBrandClick("Harley Davidson")}
                 />
                 <span className="checkbox-custom"></span>
                 Harley Davidson
-              </label>
-              <label className="checkbox-label">
+              </label> 
+               <label className="checkbox-label">
                 <input
                   type="checkbox"
-                  checked={isCategorySelected("Stussy")}
-                  onChange={() => handleCategoryClick("Stussy")}
+                  checked={isBrandSelected("Stussy")}
+                  onChange={() => handleBrandClick("Stussy")}
                 />
                 <span className="checkbox-custom"></span>
                 Stussy
-              </label>
+              </label> 
               <label className="checkbox-label">
                 <input
                   type="checkbox"
-                  checked={isCategorySelected("Ralph Lauren")}
-                  onChange={() => handleCategoryClick("Ralph Lauren")}
+                  checked={isBrandSelected("Ralph Lauren")}
+                  onChange={() => handleBrandClick("Ralph Lauren")}
                 />
                 <span className="checkbox-custom"></span>
                 Ralph Lauren
-              </label>
+              </label> 
               <label className="checkbox-label">
                 <input
                   type="checkbox"
-                  checked={isCategorySelected("Polo")}
-                  onChange={() => handleCategoryClick("Polo")}
+                  checked={isBrandSelected("Polo")}
+                  onChange={() => handleBrandClick("Polo")}
                 />
                 <span className="checkbox-custom"></span>
                 Polo
