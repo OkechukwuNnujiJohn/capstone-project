@@ -3,21 +3,16 @@ import { useState, useEffect, useContext} from "react";
 import { UserContext } from "../../UserContext.js";
 import { Link } from "react-router-dom";
 import Navbar from "../Navbar/Navbar"
+import Subbar from "../Subbar/Subbar"
 
 function Main() {
     const { user, updateUser } = useContext(UserContext);
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    // const linkElement = document.createElement("a");
+    const [selectedBrands, setSelectedBrands] = useState([]);
+    const [selectedGender, setSelectedGender] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
     
-
-    // const navigate = useNavigate();
-    // const [form, setForm] = useState({
-    //   title: '',
-    //   content: '',
-    //   credentials: 'include'
-    // });
   
     useEffect(() => {
       const fetchItems = async () => {
@@ -29,49 +24,64 @@ function Main() {
       fetchItems();
     }, []);
   
-    // const handleChange = (event) => {
-    //   setForm({
-    //     ...form,
-    //     [event.target.name]: event.target.value,
-    //   });
-    // };
-  
-    // const handleSubmit = async (event) => {
-    //   event.preventDefault();
-    //   const response = await fetch('http://localhost:3000/items', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(form),
-    //     credentials: 'include'
-    //   });
-    //   const newPost = await response.json();
-    //   setPosts([newPost, ...posts]);
-    // };
 
-    const handleCategorySelection = (category) => {
-        if (selectedCategories.includes(category)) {
-          setSelectedCategories(selectedCategories.filter((c) => c !== category));
+    const handleBrandSelection = (brand) => {
+        if (selectedBrands.includes(brand)) {
+          setSelectedBrands(selectedBrands.filter((b) => b !== brand));
         } else {
-          setSelectedCategories([...selectedCategories, category]);
+          setSelectedBrands([...selectedBrands, brand]);
         }
+        console.log("Sec",selectedBrands);
+        console.log("set selected", setSelectedBrands)
+    };
+    const handleCategorySelection = (category) => {
+        if (selectedCategory === category) {
+          setSelectedCategory("");
+        } else {
+          setSelectedCategory(category);
+        }
+        console.log("Sec",selectedCategory);
+        console.log("set selected", setSelectedCategory)
+    };
+    const handleGenderSelection = (gender) => {
+        if (selectedGender.includes(gender)) {
+          setSelectedGender(selectedGender.filter((g) => g !== gender));
+        } else {
+          setSelectedGender([...selectedGender, gender]);
+        }
+        console.log("Sec",selectedGender);
+        console.log("set selected", setSelectedGender)
+    };
+    useEffect(() => {
+        const filtered = items.filter((item) => {
+          const lowerCaseBrand = item.brand.toLowerCase();
+          const lowerCaseCategory = selectedBrands.map((c) => c.toLowerCase());
+      
+          const isBrandMatch =
+            selectedBrands.length === 0 || lowerCaseCategory.includes(lowerCaseBrand);
+          const isGenderMatch =
+            selectedGender.length === 0 || selectedGender.includes(item.gender);
+        const isCategoryMatch =
+            selectedCategory === "" || selectedCategory === item.category.toLowerCase(); // Added check for selected category
     
-        const filtered = items.filter(
-          (item) =>
-            selectedCategories.length === 0 || selectedCategories.includes(item.brand)
-        );
+      
+          return isBrandMatch && isGenderMatch && isCategoryMatch;
+        });
+      
         setFilteredItems(filtered);
-      };
+      }, [selectedBrands, selectedGender, selectedCategory, items]);
+      
+      
 
     const handleLogout = () => {
-      // Perform logout logic here
-      // Example: Clear user data from localStorage, reset user state, etc.
       updateUser(null);
     };
   
     return (
       <div className="main">
       <header className="header">
-        <Navbar handleCategorySelection={handleCategorySelection} />
+        <Navbar handleBrandSelection={handleBrandSelection} />
+        <Subbar handleGenderSelection = {handleGenderSelection} handleCategorySelection={handleCategorySelection} />
         <div className="user-info">
           {user ? (
             <>
@@ -83,22 +93,6 @@ function Main() {
           )}
         </div>
       </header>
-        {/* <form className="new-post-form" onSubmit={handleSubmit}>
-            <input
-                type="text"
-                name="title"
-                placeholder="Title"
-                value={form.title}
-                onChange={handleChange}
-            />
-            <textarea
-                name="content"
-                placeholder="Content"
-                value={form.content}
-                onChange={handleChange}
-            />
-            <button type="submit">Submit</button>
-        </form> */}
         <div className="items-container">
         {filteredItems.map((item) => (
           <div className="item" key={item.id}>

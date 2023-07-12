@@ -11,7 +11,7 @@ const router = express.Router();
     router.post('/users', async (req, res) => {
         console.log("it got here");
       const { first_name,last_name, email,gender,  password,favoriteColors, favoriteBrands} = req.body;
-        console.log("body", body);
+        console.log("body", req.body);
       try {
         // Check if email already exists
         const existingUser = await User.findOne({
