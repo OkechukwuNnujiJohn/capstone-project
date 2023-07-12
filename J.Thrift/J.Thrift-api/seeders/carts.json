@@ -1,0 +1,22 @@
+[
+    {
+        "quantity": "2",
+        "userId": "1"
+    },
+    {
+        "quantity": "1",
+        "userId": "2"
+    },
+    {
+        "quantity": "3",
+        "userId": "3"
+    },
+    {
+        "quantity": "1",
+        "userId": "4"
+    },
+    {
+        "quantity": "2",
+        "userId": "5"
+    }
+]

@@ -3,7 +3,16 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
 
 export const User = sequelize.define('User', {
-  username: {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  first_name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  last_name: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -12,8 +21,20 @@ export const User = sequelize.define('User', {
     allowNull: false,
     unique: true
   },
+  gender: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   password: {
     type: DataTypes.STRING,
+    allowNull: false
+  },
+  favoriteColors: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: false
+  },
+  favoriteBrands: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false
   }
 });
