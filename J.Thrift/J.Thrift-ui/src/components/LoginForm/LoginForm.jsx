@@ -4,9 +4,9 @@ import { UserContext } from '../../UserContext.js';
 import './LoginForm.css'
 
 const LoginForm = () => {
-  const [useremail, setUseremail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { updateUseremail } = useContext(UserContext);
+  const { updateUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -15,21 +15,23 @@ const LoginForm = () => {
 
     try {
       // Make the login API request
+      console.log("about to fetch");
       const response = await fetch(`http://localhost:3000/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ useremail, password }),
+        body: JSON.stringify({ email, password }),
         credentials: 'include'
       });
+      console.log("login response:",response)
 
       if (response.ok) {
         const data = await response.json();
         const loggedInUser = data.user_name;
 
         // Update the user context
-        updateUseremail(loggedInUser);
+        updateUser(loggedInUser);
 
         // Navigate to the home page after successful login
         navigate('/');
@@ -52,8 +54,8 @@ const LoginForm = () => {
           <input
             type="text"
             id="useremail"
-            value={useremail}
-            onChange={(e) => setUseremail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>

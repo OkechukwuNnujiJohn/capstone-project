@@ -12,13 +12,15 @@ import SequelizeStoreInit from 'connect-session-sequelize';
 // import { User, Post } from './models/index.js';
 
 const app = express();
+// const cors = require('cors');
+
 
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
 app.use(express.json()); // Middleware for parsing JSON bodies from HTTP requests
-app.use(morgan())
+app.use(morgan('dev'))
 
 const SequelizeStore = SequelizeStoreInit(session.Store);
 const sessionStore = new SequelizeStore({

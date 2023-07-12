@@ -3,11 +3,6 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
 
 export const User = sequelize.define('User', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
   first_name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -31,10 +26,12 @@ export const User = sequelize.define('User', {
   },
   favoriteColors: {
     type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: false
+    allowNull: false,
+    defaultValue: []
   },
   favoriteBrands: {
     type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: false
+    allowNull: false,
+    defaultValue: []
   }
 });

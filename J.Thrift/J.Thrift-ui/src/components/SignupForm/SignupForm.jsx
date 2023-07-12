@@ -9,14 +9,31 @@ const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [password, setPassword] = useState('');
-  const [favoriteColors, setFavoriteColors] = useState([]);
-  const [favoriteBrands, setFavoriteBrands] = useState([]);
+  const [favoriteColors, setFavoriteColors] = useState('');
+  const [favoriteBrands, setFavoriteBrands] = useState('');
+  let fC;
+  let fB;
 
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    console.log("Logged successfully", first_name)
+    console.log("Logged successfully", last_name)
+    console.log("Logged successfully", email)
+    console.log("Logged successfully", gender)
+    console.log("Logged successfully", password)
+    console.log("Logged successfully", favoriteColors.split(','))
+    console.log("Logged successfully", favoriteBrands.split(','))
+
+    // fB = favoriteBrands.split(',');
+    // console.log("fb:", fB);
+
+    // fC = favoriteColors.split(',');
+    // console.log("fC:", fC);
 
     try {
       // Make the signup API request
@@ -25,24 +42,41 @@ const SignupForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ first_name, last_name, email,gender, password, favoriteColors:[], favoriteBrands:[] }),
+    
+        body: JSON.stringify({ first_name, last_name, email,gender, password, favoriteColors: favoriteColors.split(',').map(color => color.trim()), // Split and trim each color value
+        favoriteBrands: favoriteBrands.split(',').map(brand => brand.trim()), // Split and trim each brand value}),
+        // body: JSON.stringify( "joHN", "NNUJI", "nnjoh@gmail.com","gender", "password", ["orange", "brown"],["Stussy", "Ralph Lauren"] // Split and trim each color value
+        // favoriteBrands: favoriteBrands.split(',').map(brand => brand.trim()), // Split and trim each brand value}),
+      }),
         credentials: 'include'
+        
       });
+      console.log("fetch successfully")
+      
+      console.log(response)
 
       if (response.ok) {
         const data = await response.json();
         const loggedInUser = data.user;
 
+
+
         console.log('Signup successful');
 
         // Reset form fields
         setFirstName('');
+        
         setLastName('');
+        
         setEmail('');
         setGender('');
+        
         setPassword('');
-        setFavoriteColors([...favoriteColors, ''])
-        setFavoriteBrands([...favoriteBrands, ''])
+        
+        setFavoriteColors('')
+        
+        setFavoriteBrands('')
+        
 
 
         // Update the user context
@@ -65,20 +99,20 @@ const SignupForm = () => {
       <form className="signup-form" onSubmit={handleSubmit}>
         <h2>Sign Up</h2>
         <div className="form-group">
-          <label htmlFor="firstName">firstName:</label>
+          <label htmlFor="first_name">firstName:</label>
           <input
             type="text"
-            id="firstName"
+            id="first_name"
             value={first_name}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="lastName">lastName:</label>
+          <label htmlFor="last_name">lastName:</label>
           <input
             type="text"
-            id="lastName"
+            id="last_name"
             value={last_name}
             onChange={(e) => setLastName(e.target.value)}
             required
@@ -120,6 +154,7 @@ const SignupForm = () => {
             type="text"
             id="favoriteColors"
             value={favoriteColors}
+            // fC = {value.split(',')}
             onChange={(e) => setFavoriteColors(e.target.value)}
             required
           />
@@ -130,6 +165,7 @@ const SignupForm = () => {
             type="text"
             id="favoriteBrands"
             value={favoriteBrands}
+            // fB = (value.split(','))
             onChange={(e) => setFavoriteBrands(e.target.value)}
             required
           />
