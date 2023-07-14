@@ -11,15 +11,11 @@ const __dirname = path.dirname(__filename);
 const userData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeders/users.json'), 'utf8'));
 const itemData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeders/items.json'), 'utf8'));
 const cartData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeders/carts.json'), 'utf8'));
-// const cartItemData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './seeders/cartItem.json'), 'utf8'));
 
 
 const seedDatabase = async () => {
   try {
-    // Sync all models that aren't already in the database
     await sequelize.sync({ alter: true });
-
-    // Then seed the User and Post data
     await User.bulkCreate(userData);
     console.log('User data has been seeded!');
 
@@ -28,9 +24,6 @@ const seedDatabase = async () => {
 
     await Cart.bulkCreate(cartData);
     console.log(' Cart data has been seeded!');
-
-    // await CartItem.bulkCreate(cartItemData);
-    // console.log('Item data has been seeded!');
 
   } catch (error) {
     console.error('Error seeding data:', error);

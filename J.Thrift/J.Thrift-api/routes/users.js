@@ -50,16 +50,14 @@ router.post('/users/login', async (req, res) => {
   try {
     // Find the user by username
     const user = await User.findOne({ where: { email } });
-
     if (!user) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Compare the password
     const isValidPassword = await bcrypt.compare(password, user.password);
-
     if (!isValidPassword) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Set the user in the session

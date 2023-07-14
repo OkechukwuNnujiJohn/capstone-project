@@ -3,11 +3,6 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
 
 export const Item = sequelize.define('Item', {
-  // id: {
-  //   type: DataTypes.INTEGER,
-  //   autoIncrement: true,
-  //   primaryKey: true
-  // },
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -28,13 +23,13 @@ export const Item = sequelize.define('Item', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  price:{
+  price: {
     type: DataTypes.FLOAT,
-    allowNull:false
+    allowNull: false
   },
-  description:{
+  description: {
     type: DataTypes.TEXT,
-    allowNull:false
+    allowNull: false
   },
   color: {
     type: DataTypes.STRING,
