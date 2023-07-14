@@ -1,4 +1,55 @@
-.tops-button {
-    cursor: pointer;
-  }
-  
+/* .tops-button {
+  cursor: pointer;
+} */
+
+.gender-options {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkbox-custom::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #333333;
+  background-color: black;
+  border-top: none;
+  border-right: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: background-color 0.3s ease;
+}
+
+.checkbox-custom input[type="checkbox"]:checked+.checkbox-custom::after {
+  opacity: 10;
+}
+
+
+.checkbox-custom input[type="checkbox"]:checked+.checkbox-custom {
+  background-color: #333333;
+}
+
+
+.button {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-active {
+  background-color: red;
+}

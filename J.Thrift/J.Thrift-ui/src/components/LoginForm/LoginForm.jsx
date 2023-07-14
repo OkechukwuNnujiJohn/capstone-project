@@ -28,7 +28,7 @@ const LoginForm = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const loggedInUser = data.user_name;
+        const loggedInUser = data.user;
 
         // Update the user context
         updateUser(loggedInUser);
@@ -50,10 +50,10 @@ const LoginForm = () => {
       <form className="login-form" onSubmit={handleLogin}>
         <h2>Login</h2>
         <div className="form-group">
-          <label htmlFor="useremail">Useremail:</label>
+          <label htmlFor="email">Useremail:</label>
           <input
             type="text"
-            id="useremail"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
