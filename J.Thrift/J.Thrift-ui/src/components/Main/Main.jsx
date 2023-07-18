@@ -1,9 +1,13 @@
 import "./Main.css";
-import { useState, useEffect, useContext } from "react";
+import React from 'react'
+import { useState, useEffect, useContext, createContext} from "react";
 import { UserContext } from "../../UserContext.js";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Subbar from "../Subbar/Subbar";
+import MyUploadsPage from '../MyUploadsPage/MyUploadsPage';
+
+export const RefreshContext = createContext();
 
 function Main() {
   const { user, updateUser } = useContext(UserContext);
@@ -15,6 +19,8 @@ function Main() {
   const [showRecommended, setShowRecommended] = useState(false);
   const [recommendedChanged, setRecommendedChanged] = useState(false); // New state variable
   const navigate = useNavigate();
+  const [refreshData, setRefreshData] = useState(false);
+
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -24,7 +30,7 @@ function Main() {
       setFilteredItems(data);
     };
     fetchItems();
-  }, []);
+  }, [],[refreshData]);
 
   const handleBrandSelection = (brand) => {
     if (selectedBrands.includes(brand)) {
@@ -104,6 +110,7 @@ function Main() {
   };
 
   return (
+    <RefreshContext.Provider value={setRefreshData}>
     <div className="main">
       <header className="header">
         <Navbar handleBrandSelection={handleBrandSelection} />
@@ -127,12 +134,17 @@ function Main() {
               <h4>By {item.brand}</h4>
             </div>
             <div className="item-image">
-              <img src={item.image} alt={item.name} />
+            {item.image.startsWith('http') ? (
+                <img src={item.image} alt={item.name} />
+              ) : (
+                <img src={`http://localhost:3000/images/${item.image}`} alt={item.name} />
+              )}
             </div>
           </div>
         ))}
       </div>
     </div>
+    </RefreshContext.Provider>
   );
 }
 

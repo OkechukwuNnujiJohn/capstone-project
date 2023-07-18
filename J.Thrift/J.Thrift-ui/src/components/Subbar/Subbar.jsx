@@ -4,10 +4,13 @@ import { MdArrowDropDown } from 'react-icons/Md';
 import { AiOutlineCheck } from 'react-icons/Ai';
 import { Link } from "react-router-dom";
 
-export default function Subbar({ handleGenderSelection, handleCategorySelection, showRecommended, setShowRecommended, user, navigate }) {
+
+export default function Subbar({ handleGenderSelection, handleCategorySelection, showRecommended, setShowRecommended, user, navigate}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedGender, setSelectedGender] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  // const [selectedImage, setSelectedImage] = useState(null);
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -37,7 +40,6 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection,
   const handleRecommendedClick = () => {
     setShowRecommended(!showRecommended);
   };
-
 
 
   return (
@@ -89,6 +91,13 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection,
         ) : (
           <Link to="/login" className="recommended-button">
             <span className="category-label">Recommended</span>
+          </Link>
+        )}
+
+        {user && (
+          <Link to="/myuploads" className="button">
+            <span className="category-label">My Uploads</span>
+
           </Link>
         )}
       </div>

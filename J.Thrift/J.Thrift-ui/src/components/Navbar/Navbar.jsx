@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import logo from './logo.png';
 import { AiOutlineShoppingCart, AiOutlineCheck } from 'react-icons/Ai';
 import { MdArrowDropDown } from 'react-icons/Md';
+import { UserContext } from "../../UserContext";
 
 export default function Navbar({ handleBrandSelection }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -24,6 +27,14 @@ export default function Navbar({ handleBrandSelection }) {
 
   const isBrandSelected = (brand) => {
     return selectedBrands.includes(brand);
+  };
+
+  const handleUploadClick = () => {
+    if (user) {
+      navigate("/uploadpage");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -102,6 +113,9 @@ export default function Navbar({ handleBrandSelection }) {
         <Link to="/buy" className="navbar-link">
           My cart <AiOutlineShoppingCart />
         </Link>
+        <button to="/uploadpage" className="navbar-link" onClick={handleUploadClick}>
+          Upload Image
+        </button>
       </div>
     </nav>
   );
