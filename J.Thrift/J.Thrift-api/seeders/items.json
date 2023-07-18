@@ -1,6 +1,5 @@
 [
     {
-        "id": "1",
         "name": "Men's T-Shirt",
         "category": "tops",
         "gender": "Male",
@@ -12,7 +11,6 @@
         
     },
     {
-        "id": "2",
         "name": "Women's Hoodie",
         "category": "tops",
         "gender": "Female",
@@ -23,7 +21,6 @@
         "color": "Gray"
     },
     {
-        "id": "3",
         "name": "Men's Jeans",
         "category": "bottoms",
         "gender": "Male",
@@ -34,7 +31,6 @@
         "color": "Blue"
     },
     {
-        "id": "4",
         "name": "Women's Cargo Pants",
         "category": "bottoms",
         "gender": "Female",
@@ -45,7 +41,6 @@
         "color": "Black"
     },
     {
-        "id": "5",
         "name": "Men's Sneakers",
         "category": "Shoes",
         "gender": "Male",
@@ -56,7 +51,6 @@
         "color": "White"
     },
     {
-        "id": "6",
         "name": "Women's loafers",
         "category": "Shoes",
         "gender": "Female",
@@ -67,7 +61,6 @@
         "color": "Pink"
     },
     {
-        "id": "7",
         "name": "Men's Polo Shirt",
         "category": "Tops",
         "gender": "Male",
@@ -78,7 +71,6 @@
         "color": "Blue"
     },
     {
-        "id": "8",
         "name": "Women's Dress",
         "category": "allbody",
         "gender": "Female",
@@ -89,7 +81,6 @@
         "color": "Red"
     },
     {
-        "id": "9",
         "name": "Men's Jacket",
         "category": "outerwear",
         "gender": "Male",
@@ -100,7 +91,6 @@
         "color": "Brown"
     },
     {
-        "id": "10",
         "name": "Women's Sweatshirt",
         "category": "tops",
         "gender": "Female",
@@ -111,7 +101,6 @@
         "color": "Black"
     },
     {
-        "id": "11",
         "name": "Men's Shorts",
         "category": "bottoms",
         "gender": "Male",
@@ -122,7 +111,6 @@
         "color": "Gray"
     },
     {
-        "id": "12",
         "name": "Women's Blouse",
         "category": "allbody",
         "gender": "Female",
@@ -133,7 +121,6 @@
         "color": "White"
     },
     {
-        "id": "13",
         "name": "Men's Swim Trunks",
         "category": "bottoms",
         "gender": "Male",
@@ -144,7 +131,6 @@
         "color": "Blue"
     },
     {
-        "id": "14",
         "name": "Women's Skirt",
         "category": "bottoms",
         "gender": "Female",
@@ -155,7 +141,6 @@
         "color": "Black"
     },
     {
-        "id": "15",
         "name": "Men's Sweatpants",
         "category": "bottoms",
         "gender": "Male",
@@ -166,7 +151,6 @@
         "color": "Gray"
     },
     {
-        "id": "16",
         "name": "Women's Jacket",
         "category": "outerwear",
         "gender": "Female",
@@ -177,7 +161,6 @@
         "color": "Black"
     },
     {
-        "id": "17",
         "name": "Men's Button-Down Shirt",
         "category": "tops",
         "gender": "Male",
@@ -188,7 +171,6 @@
         "color": "White"
     },
     {
-        "id": "18",
         "name": "Women's Jeans",
         "category": "bottoms",
         "gender": "Female",
