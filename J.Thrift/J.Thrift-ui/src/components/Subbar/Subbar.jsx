@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import "./Subbar.css";
 import { MdArrowDropDown } from 'react-icons/Md';
+import { AiOutlineCheck } from 'react-icons/Ai';
+import { Link } from "react-router-dom";
 
 
-export default function Subbar({ handleGenderSelection, handleCategorySelection }) {
+export default function Subbar({ handleGenderSelection, handleCategorySelection, showRecommended, setShowRecommended, user, navigate}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedGender, setSelectedGender] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  // const [selectedImage, setSelectedImage] = useState(null);
 
 
   const toggleDropdown = () => {
@@ -15,16 +18,29 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection 
 
   const handleGenderClick = (gender) => {
     handleGenderSelection(gender);
+    const updatedSelectedGender = isGenderSelected(gender)
+      ? selectedGender.filter((selected) => selected !== gender)
+      : [...selectedGender, gender];
+    setSelectedGender(updatedSelectedGender);
     console.log("g", gender);
   };
 
   const handleTopsClick = (category) => {
-    handleCategorySelection(category);
+    if (category === "recommended" && !user) {
+      navigate("/login");
+    } else {
+      handleCategorySelection(category);
+    }
   };
 
   const isGenderSelected = (gender) => {
     return selectedGender.includes(gender);
   };
+
+  const handleRecommendedClick = () => {
+    setShowRecommended(!showRecommended);
+  };
+
 
   return (
     <div className="subbar">
@@ -32,66 +48,59 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection 
         Gender <MdArrowDropDown />
       </div>
       {isDropdownOpen && (
-        <div className="GenderBarMenu" onClick={toggleDropdown}>
-          <div className="genderOptions" onClick={() => handleGenderClick("Male")}>
+        <div className="GenderBarMenu">
+          <label className="gender-options" htmlFor="male-checkbox" >
             <input
               type="checkbox"
+              id="male-checkbox"
               checked={isGenderSelected("Male")}
               onChange={() => handleGenderClick("Male")}
             />
-            <span className="checkbox-custom"></span>
+            <span className="checkbox-custom">{isGenderSelected("Male") && <AiOutlineCheck />}</span>
             Men
-          </div>
-          <div className="gender-options" onClick={() => handleGenderClick("Female")}>
+          </label>
+          <label className="gender-options" htmlFor="female-checkbox">
             <input
               type="checkbox"
+              id="female-checkbox"
               checked={isGenderSelected("Female")}
               onChange={() => handleGenderClick("Female")}
             />
-            <span className="checkbox-custom"></span>
+            <span className="checkbox-custom">{isGenderSelected("Female") && <AiOutlineCheck />}</span>
             Women
-          </div>
+          </label>
         </div>
       )}
-
       <div className="left-half-subbar">
-        <button
-          className="tops-button"
-          onClick={() => handleTopsClick("tops")}
-        >
-          <label className="category-label">
-            <span className="checkbox-custom"></span>
-            Tops
-          </label>
+        <button className="button" onClick={() => handleTopsClick("tops")}>
+          <span className="category-label">Tops</span>
         </button>
-        <button
-          className="bottoms-button"
-          onClick={() => handleTopsClick("bottoms")}
-        >
-          <label className="category-label">
-            <span className="checkbox-custom"></span>
-            Bottoms
-          </label>
+        <button className="button" onClick={() => handleTopsClick("bottoms")}>
+          <span className="category-label">Bottoms</span>
         </button>
-        <button
-          className="outerLayer-button"
-          onClick={() => handleTopsClick("outerwear")}
-        >
-          <label className="category-label">
-            <span className="checkbox-custom"></span>
-            Out Layer
-          </label>
+        <button className="button" onClick={() => handleTopsClick("outerwear")}>
+          <span className="category-label">Outer Layer</span>
         </button>
-        <button
-          className="shoes-button"
-          onClick={() => handleTopsClick("shoes")}
-        >
-          <label className="category-label">
-            <span className="checkbox-custom"></span>
-            Shoes
-          </label>
+        <button className="button" onClick={() => handleTopsClick("shoes")}>
+          <span className="category-label">Shoes</span>
         </button>
+        {user ? (
+          <button className="button" onClick={handleRecommendedClick}>
+            <span className="category-label">Recommended</span>
+          </button>
+        ) : (
+          <Link to="/login" className="recommended-button">
+            <span className="category-label">Recommended</span>
+          </Link>
+        )}
+
+        {user && (
+          <Link to="/myuploads" className="button">
+            <span className="category-label">My Uploads</span>
+
+          </Link>
+        )}
       </div>
     </div>
-  )
+  );
 }

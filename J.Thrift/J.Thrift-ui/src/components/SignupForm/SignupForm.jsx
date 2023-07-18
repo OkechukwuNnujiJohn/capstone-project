@@ -11,8 +11,7 @@ const SignupForm = () => {
   const [password, setPassword] = useState('');
   const [favoriteColors, setFavoriteColors] = useState('');
   const [favoriteBrands, setFavoriteBrands] = useState('');
-  let fC;
-  let fB;
+
 
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -20,76 +19,35 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-    console.log("Logged successfully", first_name)
-    console.log("Logged successfully", last_name)
-    console.log("Logged successfully", email)
-    console.log("Logged successfully", gender)
-    console.log("Logged successfully", password)
-    console.log("Logged successfully", favoriteColors.split(','))
-    console.log("Logged successfully", favoriteBrands.split(','))
-
-    // fB = favoriteBrands.split(',');
-    // console.log("fb:", fB);
-
-    // fC = favoriteColors.split(',');
-    // console.log("fC:", fC);
-
     try {
-      // Make the signup API request
       const response = await fetch(`http://localhost:3000/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-    
-        body: JSON.stringify({ first_name, last_name, email,gender, password, favoriteColors: favoriteColors.split(',').map(color => color.trim()), // Split and trim each color value
-        favoriteBrands: favoriteBrands.split(',').map(brand => brand.trim()), // Split and trim each brand value}),
-        // body: JSON.stringify( "joHN", "NNUJI", "nnjoh@gmail.com","gender", "password", ["orange", "brown"],["Stussy", "Ralph Lauren"] // Split and trim each color value
-        // favoriteBrands: favoriteBrands.split(',').map(brand => brand.trim()), // Split and trim each brand value}),
-      }),
+        body: JSON.stringify({ first_name, last_name, email, gender, password, favoriteColors: favoriteColors.split(',').map(color => color.trim()), favoriteBrands: favoriteBrands.split(',').map(brand => brand.trim()), }),
         credentials: 'include'
-        
       });
-      console.log("fetch successfully")
-      
-      console.log(response)
 
       if (response.ok) {
         const data = await response.json();
         const loggedInUser = data.user;
 
-
-
         console.log('Signup successful');
-
-        // Reset form fields
         setFirstName('');
-        
         setLastName('');
-        
         setEmail('');
         setGender('');
-        
         setPassword('');
-        
         setFavoriteColors('')
-        
         setFavoriteBrands('')
-        
 
-
-        // Update the user context
         updateUser(loggedInUser);
-
-        // Navigate to the home page after successful login
         navigate('/');
       } else {
-        // Handle signup failure case
         alert('Signup failed');
       }
     } catch (error) {
-      // Handle any network or API request errors
       alert('Signup failed: ' + error);
     }
   };
@@ -154,7 +112,6 @@ const SignupForm = () => {
             type="text"
             id="favoriteColors"
             value={favoriteColors}
-            // fC = {value.split(',')}
             onChange={(e) => setFavoriteColors(e.target.value)}
             required
           />
@@ -165,7 +122,6 @@ const SignupForm = () => {
             type="text"
             id="favoriteBrands"
             value={favoriteBrands}
-            // fB = (value.split(','))
             onChange={(e) => setFavoriteBrands(e.target.value)}
             required
           />

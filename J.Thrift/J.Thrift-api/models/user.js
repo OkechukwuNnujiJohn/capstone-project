@@ -34,4 +34,7 @@ export const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: []
   }
+  // itemsUploaded: {
+  //   type: DataTypes.ARRAY(DataTypes.INTEGER)
+  // }
 });

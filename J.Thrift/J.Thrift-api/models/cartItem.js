@@ -4,20 +4,20 @@ import { Item } from './item.js';
 import { Cart } from './cart.js';
 
 export const CartItem = sequelize.define('CartItem', {
-    cartId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: Cart, // 'Movies' would also work
-          key: 'id'
-        }
-      },
-      itemId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: Item, // 'Actors' would also work
-          key: 'id'
-        }
-      }
-    });
+  cartId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Cart,
+      key: 'id'
+    }
+  },
+  itemId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Item,
+      key: 'id'
+    }
+  }
+});
 
 export default CartItem;
