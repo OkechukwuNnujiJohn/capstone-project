@@ -1,6 +1,7 @@
 // models/post.js
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
+import {User} from './user.js'
 
 export const Item = sequelize.define('Item', {
   name: {

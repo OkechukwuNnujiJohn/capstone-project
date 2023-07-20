@@ -89,6 +89,8 @@ app.get('/items', async (req, res) => {
   }
 });
 
+
+
 app.post('/items', upload.single('image'), [
   body('name').notEmpty().withMessage('Name is required'),
   body('category').notEmpty().withMessage('Category is required'),
@@ -117,13 +119,18 @@ app.post('/items', upload.single('image'), [
       description: req.body.description,
       color: req.body.color
     };
+    // console.log("newiTEM:",newItem)
     const createdItem = await Item.create(newItem);
+    // await createdItem.update({ UserId: req.session.user.id });
+
     res.status(201).json(createdItem);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Could not create internship' });
+    res.status(500).json({ message: 'Could not add item' });
   }
 }); 
+
+
 
 
 //Route to get all Cart

@@ -8,7 +8,8 @@ export default function MyUploadsPage() {
   useEffect(() => {
     const fetchMyUploads = async () => {
       try {
-        const response = await fetch("http://localhost:3000/myuploads", {
+        const url = user? "http://localhost:3000/items?userId=${user.id}": `http://localhost:3000/items`;
+        const response = await fetch(url,{
           credentials: "include",
         });
 
@@ -23,11 +24,11 @@ export default function MyUploadsPage() {
       }
     };
 
-    if (user) {
+    // if (user) {
       fetchMyUploads();
-    } else {
-      setMyUploads([]);
-    }
+    // } else {
+    //   setMyUploads([]);
+    // }
   }, [user]);
 
   return (

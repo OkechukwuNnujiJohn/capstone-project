@@ -1,6 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
+import { Item } from '../models/item.js';
 // import { Op } from 'sequelize';
 
 const router = express.Router();
@@ -68,6 +69,29 @@ router.post('/users/login', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.put('/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const updatedFields = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await user.update(updatedFields);
+    // const lastItem = await Item.findOne({ order: [['createdAt', 'DESC']] });
+    await Item.update({ UserId: user.id }, { where: { UserId: null } });
+    // if(lastItem){
+    //   await lastItem.update({UserId: user.id});
+    // }
+
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

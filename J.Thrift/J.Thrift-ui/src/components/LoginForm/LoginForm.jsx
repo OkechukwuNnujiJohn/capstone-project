@@ -30,6 +30,10 @@ const LoginForm = () => {
         const data = await response.json();
         const loggedInUser = data.user;
 
+
+        setEmail('');
+        setPassword('');
+        
         // Update the user context
         updateUser(loggedInUser);
 

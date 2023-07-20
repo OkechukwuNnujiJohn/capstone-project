@@ -14,6 +14,7 @@ function App() {
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('User');
     return storedUser ? JSON.parse(storedUser) : null;
+    
   });
 
   const updateUser = (newUser) => {

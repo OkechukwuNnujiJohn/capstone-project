@@ -47,22 +47,22 @@ const Uploadpage = () => {
     e.preventDefault();
 
       // const updatedItemsData = { ...itemsData, userId: user.id };
+      // const formData = new FormData();
+      // formData.append('name', itemsData.name);
+      // formData.append('category', itemsData.category);
+      // formData.append('gender', itemsData.gender);
+      // formData.append('brand', itemsData.brand);
+      // formData.append('price', itemsData.price);
+      // formData.append('description', itemsData.description);
+      // formData.append('color', itemsData.color);
+      // formData.append('image', itemsData.image);
+      // formData.append('userId', user.id);
+      
+      
+      try {
       const formData = new FormData();
-      Object.entries(itemsData).forEach(([key, value]) => {formData.append(key, value)
-    });
-    // const formData = new FormData();
-    // formData.append('name', itemsData.name);
-    // formData.append('category', itemsData.category);
-    // formData.append('gender', itemsData.gender);
-    // formData.append('brand', itemsData.brand);
-    // formData.append('price', itemsData.price);
-    // formData.append('description', itemsData.description);
-    // formData.append('color', itemsData.color);
-    // formData.append('image', itemsData.image);
-    // formData.append('userId', user.id);
+      Object.entries(itemsData).forEach(([key, value]) => formData.append(key, value));
 
-
-    try {
       const response = await axios.post('http://localhost:3000/items', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -70,6 +70,20 @@ const Uploadpage = () => {
       });
 
       if (response.status === 201) {
+        const newItem= response.data;
+        const updatedUser = {...user};
+        if(!updatedUser.itemsUploaded){
+        updatedUser.itemsUploaded = [];}updatedUser.itemsUploaded.push(newItem.id)
+
+        newItem.UserId = updatedUser.id;
+
+
+      // await Promise.all([
+       await  axios.put(`http://localhost:3000/users/${user.id}`, {itemsUploaded: updatedUser.itemsUploaded}),
+        await axios.put(`http://localhost:3000/items/${newItem.id}`,{UserId:updatedUser.id})
+      
+
+
         alert('Item submitted successfully!');
         setRefreshData(prev => !prev);
         navigate('/');
