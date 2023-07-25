@@ -1,16 +1,21 @@
 import "./Main.css";
 import React from 'react'
 import { useState, useEffect, useContext, createContext} from "react";
-import { UserContext } from "../../UserContext.js";
+import { UserContext, RecommendedContext,ItemsContext } from "../../../UserContext.js";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Subbar from "../Subbar/Subbar";
-import MyUploadsPage from '../MyUploadsPage/MyUploadsPage';
+import RecommendationPage from "../RecommendationPage/RecommendationPage";
+// import ProductItem from '../ProductItem/ProductItem.jsx';
+
+// import MyUploadsPage from '../MyUploadsPage/MyUploadsPage.'
 
 export const RefreshContext = createContext();
 
 function Main() {
   const { user, updateUser } = useContext(UserContext);
+  const { recommendedcontext, setRecommendedContext } = useContext(RecommendedContext);
+  const { itemscontext, setItemsContext } = useContext(ItemsContext);
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -20,17 +25,31 @@ function Main() {
   const [recommendedChanged, setRecommendedChanged] = useState(false); // New state variable
   const navigate = useNavigate();
   const [refreshData, setRefreshData] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
+  const [recommended,setRecommended] = useState(()=>{
+    const a = {
+      color:{},
+      brand:{}
+    }
+    return a;
+  }) 
 
+  // Step 1: Initialize the color and brand trend score objects
+  const [colorTrendScores, setColorTrendScores] = useState({});
+  const [brandTrendScores, setBrandTrendScores] = useState({});
+console.log("user",user)
 
   useEffect(() => {
     const fetchItems = async () => {
       const response = await fetch("http://localhost:3000/items");
       const data = await response.json();
       setItems(data);
+      setItemsContext(data)
+      localStorage.setItem("items", JSON.stringify(data));
       setFilteredItems(data);
     };
     fetchItems();
-  }, [],[refreshData]);
+  },[refreshData]);
 
   const handleBrandSelection = (brand) => {
     if (selectedBrands.includes(brand)) {
@@ -52,6 +71,7 @@ function Main() {
     }
   };
 
+
   useEffect(() => {
     const filtered = items.filter((item) => {
       const lowerCaseBrand = item.brand.toLowerCase();
@@ -70,25 +90,28 @@ function Main() {
     setFilteredItems(filtered);
   }, [selectedBrands, selectedGender, selectedCategory, items]);
 
+
   useEffect(() => {
     if (showRecommended && user) {
-      const filtered = items.filter((item) => {
-        const lowerCaseColors = user.favoriteColors.map((c) => c.toLowerCase());
-        const lowerCaseBrands = user.favoriteBrands.map((b) => b.toLowerCase());
-        const lowerCaseUserGender = user.gender.toLowerCase();
+      const fetchRecommendations = async () => {
+        const response = await fetch("http://localhost:3000/recommendations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+          credentials: 'include'
+        });
+        const data = await response.json();
+        setRecommendations(data);
+        console.log("Recommendations:", data);
+      };
 
-        const isColorMatch = lowerCaseColors.includes(item.color.toLowerCase());
-        const isBrandMatch = lowerCaseBrands.includes(item.brand.toLowerCase());
-        const isGenderMatch = item.gender.toLowerCase() === lowerCaseUserGender;
-
-        return (isColorMatch || isBrandMatch) && isGenderMatch;
-      });
-
-      setFilteredItems(filtered);
+      fetchRecommendations();
     } else {
-      setFilteredItems(items)
+      setRecommendations([]);
     }
-  }, [showRecommended, recommendedChanged, user, items]);
+  }, [showRecommended, user]);
 
   useEffect(() => {
     if (!showRecommended) {
@@ -102,12 +125,49 @@ function Main() {
 
   const handleRecommendedClick = () => {
     if (user) {
-
-      setShowRecommended(!showRecommended)
+      setShowRecommended(!showRecommended);
+      navigate("/recommendations"); // Navigate to the recommendations page
     } else {
-      navigate("/login");
+      navigate("/login"); // Navigate to the login page if the user is not logged in
     }
   };
+
+  const handleProductClick = (product) => {
+    // Access the product data such as color and brand here
+    const colors=recommended.color;
+    const brands=recommended.brand;
+    const keyExistsColor = product.color in colors;
+    const temporaryRecommended={...recommended};
+    console.log("tempRecom:", temporaryRecommended);
+
+  
+      if (keyExistsColor === true) {
+        const temp = { ...colors };
+        temp[product.color] += 1;
+        temporaryRecommended.color = temp;
+       } else {
+        const temporary = { ...colors, [product.color]: 1 };
+        temporaryRecommended.color = temporary;
+        
+      }
+
+    const keyExistsBrand = product.brand in brands;
+    if (keyExistsBrand === true) {
+      const temp2 = { ...brands };
+      temp2[product.brand] += 1;
+      temporaryRecommended.brand = temp2;
+     } else {
+      const temporary2 = { ...brands, [product.brand]: 1 };
+      temporaryRecommended.brand = temporary2;
+      
+    }
+    setRecommended(temporaryRecommended);
+    setRecommendedContext(temporaryRecommended);
+    localStorage.setItem("Recommended", JSON.stringify(temporaryRecommended));
+    console.log('Clicked product:', product);
+  };
+  
+console.log('recommendedContext', recommendedcontext);
 
   return (
     <RefreshContext.Provider value={setRefreshData}>
@@ -115,6 +175,12 @@ function Main() {
       <header className="header">
         <Navbar handleBrandSelection={handleBrandSelection} />
         <Subbar handleGenderSelection={handleGenderSelection} handleCategorySelection={handleCategorySelection} showRecommended={showRecommended} setShowRecommended={handleRecommendedClick} user={user} navigate={navigate} />
+        {showRecommended ? (
+        <RecommendationPage recommended={recommended} item={items}/>
+         ) : (
+          <>
+          </>
+          )} 
         <div className="user-info">
           {user ? (
             <>
@@ -127,8 +193,14 @@ function Main() {
         </div>
       </header>
       <div className="items-container">
+      {/* {showRecommended ? (
+        <RecommendationPage user={user} recommended={recommended} item={items}/>
+      ) : (
+        <>
+        {filteredItems.map((item) => ( */}
         {filteredItems.map((item) => (
-          <div className="item" key={item.id}>
+          
+          <div className="item" key={item.id} onClick={() => handleProductClick(item)} style={{ cursor: "pointer" }}>
             <div className="item-details">
               <h2>{item.name}</h2>
               <h4>By {item.brand}</h4>
@@ -140,9 +212,13 @@ function Main() {
                 <img src={`http://localhost:3000/images/${item.image}`} alt={item.name} />
               )}
             </div>
+            {/* <ProductItem key={item.id} item={item} onProductClick={handleProductClick} /> */}
           </div>
         ))}
-      </div>
+        {/* 
+        </>
+  )} */}
+        </div>
     </div>
     </RefreshContext.Provider>
   );

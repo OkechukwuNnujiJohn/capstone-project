@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { sequelize } from './database.js';
 import { User, Cart, Item, CartItem } from './models/index.js';
+// import recommendationRoutes from './routes/recommendations.js';
 import userRoutes from './routes/users.js';
 import SequelizeStoreInit from 'connect-session-sequelize';
 import { body, validationResult } from 'express-validator';
@@ -69,6 +70,7 @@ app.use(
 sessionStore.sync();
 
 app.use(userRoutes);
+// app.use(recommendationRoutes);
 
 // Route to get all users
 app.get('/users', async (req, res) => {

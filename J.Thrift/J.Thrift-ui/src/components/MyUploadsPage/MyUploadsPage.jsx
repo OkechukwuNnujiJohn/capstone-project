@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../UserContext";
+import { UserContext } from "../../../UserContext";
 
 export default function MyUploadsPage() {
   const { user } = useContext(UserContext);

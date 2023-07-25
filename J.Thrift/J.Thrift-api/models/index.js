@@ -12,4 +12,6 @@ Item.belongsToMany(Cart, { through: CartItem});
 User.hasMany(Item);
 Item.belongsTo(User);
 
+// , { as: 'items', foreignKey: 'userId' }
+
 export { User,Item, Cart, CartItem };

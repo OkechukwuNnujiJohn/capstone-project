@@ -3,7 +3,7 @@ import axios from 'axios';
 import { RefreshContext } from '../Main/Main.JSX';
 import { useNavigate } from 'react-router-dom';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
-import { UserContext } from '../../UserContext';
+import { UserContext } from '../../../UserContext';
 
 const Uploadpage = () => {
   const [itemsData, setItemsData] = useState({
@@ -66,7 +66,8 @@ const Uploadpage = () => {
       const response = await axios.post('http://localhost:3000/items', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        credentials: 'include'
       });
 
       if (response.status === 201) {
