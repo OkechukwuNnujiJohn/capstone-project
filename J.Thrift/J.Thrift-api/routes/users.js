@@ -2,8 +2,6 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
 import { Item } from '../models/item.js';
-import { Op } from 'sequelize';
-
 
 const router = express.Router();
     console.log(("first siting"));
@@ -87,51 +85,4 @@ router.post('/recommendations', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
-
-// const getRecommendedItems = async (favoriteColors, favoriteBrands, gender) => {
-//   try {
-//     // Calculate trend scores for colors and brands based on user interactions
-//     const colorTrendScores = {};
-//     const brandTrendScores = {};
-
-//     // Iterate through user's favorite colors and update trend scores
-//     favoriteColors.forEach((color) => {
-//       if (colorTrendScores[color]) {
-//         colorTrendScores[color]++;
-//       } else {
-//         colorTrendScores[color] = 1;
-//       }
-//     });
-
-//     // Iterate through user's favorite brands and update trend scores
-//     favoriteBrands.forEach((brand) => {
-//       if (brandTrendScores[brand]) {
-//         brandTrendScores[brand]++;
-//       } else {
-//         brandTrendScores[brand] = 1;
-//       }
-//     });
-
-//     // Fetch items based on user preferences and trend scores
-//     const filteredItems = await Item.findAll({
-//       where: {
-//         color: { [Op.in]: favoriteColors },
-//         brand: { [Op.in]: favoriteBrands },
-//         gender: gender,
-//       },
-//       order: [
-//         [sequelize.literal('(colorTrendScores[color] || 0)'), 'DESC'], // Sort by color trend score
-//         [sequelize.literal('(brandTrendScores[brand] || 0)'), 'DESC'], // Sort by brand trend score
-//       ],
-//     });
-
-//     return filteredItems;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-
-
 export default router;

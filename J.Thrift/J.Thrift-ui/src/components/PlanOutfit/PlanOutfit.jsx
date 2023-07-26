@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 function PlanOutfit() {
-    const [garments, setGarments] = useState(null);
+    const [garments, setGarments] = useState([]);
     const [specificGarment, setSpecificGarment] = useState(null);
 
     useEffect(() => {
@@ -75,4 +75,3 @@ function PlanOutfit() {
 }
 
 export default PlanOutfit;
-
