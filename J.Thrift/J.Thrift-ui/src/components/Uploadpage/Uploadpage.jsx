@@ -45,20 +45,6 @@ const Uploadpage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-      // const updatedItemsData = { ...itemsData, userId: user.id };
-      // const formData = new FormData();
-      // formData.append('name', itemsData.name);
-      // formData.append('category', itemsData.category);
-      // formData.append('gender', itemsData.gender);
-      // formData.append('brand', itemsData.brand);
-      // formData.append('price', itemsData.price);
-      // formData.append('description', itemsData.description);
-      // formData.append('color', itemsData.color);
-      // formData.append('image', itemsData.image);
-      // formData.append('userId', user.id);
-      
-      
       try {
       const formData = new FormData();
       Object.entries(itemsData).forEach(([key, value]) => formData.append(key, value));

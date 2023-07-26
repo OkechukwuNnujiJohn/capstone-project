@@ -5,7 +5,7 @@ import { AiOutlineCheck } from 'react-icons/Ai';
 import { Link } from "react-router-dom";
 
 
-export default function Subbar({ handleGenderSelection, handleCategorySelection, showRecommended, setShowRecommended, user, navigate}) {
+export default function Subbar({ handleGenderSelection, handleCategorySelection, showRecommended,showPlanPage, setShowRecommended,setShowPlanPage, user, navigate}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedGender, setSelectedGender] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -40,6 +40,10 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection,
   const handleRecommendedClick = () => {
     setShowRecommended(!showRecommended);
   };
+
+  // const handlePlanClick = () => {
+  //     setShowPlanPage(!showPlanPage);
+  // };
 
 
   return (
@@ -94,6 +98,19 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection,
           </Link>
         )}
 
+        {/* {user ? (
+          <button className="button" onClick={handlePlanClick}>
+            <span className="category-label">Plan an Outfit</span>
+          </button>
+        ) : (
+          <Link to="/login" className="recommended-button">
+            <span className="category-label">Plan An Outfit</span>
+          </Link>
+        )} */}
+
+
+
+
         {user && (
           <Link to="/myuploads" className="button">
             <span className="category-label">My Uploads</span>
@@ -104,3 +121,4 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection,
     </div>
   );
 }
+
