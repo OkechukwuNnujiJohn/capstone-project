@@ -4,10 +4,12 @@ import "./Navbar.css";
 import logo from './logo.png';
 import { AiOutlineShoppingCart, AiOutlineCheck } from 'react-icons/Ai';
 import { MdArrowDropDown } from 'react-icons/Md';
-import { UserContext } from "../../UserContext";
+import { UserContext } from "../../../UserContext";
+// import PlanOutfit from "../PlanOutfit/PlanOutfit"
 
 export default function Navbar({ handleBrandSelection }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [showPlanPage, setShowPlanPage]=useState
   const [selectedBrands, setSelectedBrands] = useState([]);
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
@@ -36,6 +38,8 @@ export default function Navbar({ handleBrandSelection }) {
       navigate("/login");
     }
   };
+
+  
 
   return (
     <nav className="navbar">
@@ -107,7 +111,7 @@ export default function Navbar({ handleBrandSelection }) {
             </div>
           )}
         </div>
-        <Link to="/buy" className="navbar-link">
+        <Link to="/plananoutfit" className="navbar-link">
           Plan An Outfit
         </Link>
         <Link to="/buy" className="navbar-link">

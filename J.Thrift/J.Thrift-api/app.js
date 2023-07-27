@@ -7,6 +7,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { sequelize } from './database.js';
 import { User, Cart, Item, CartItem } from './models/index.js';
+import axios from 'axios';
+import getAuthenticationHeader from './authenticatonHeader.js';
 import userRoutes from './routes/users.js';
 import SequelizeStoreInit from 'connect-session-sequelize';
 import { body, validationResult } from 'express-validator';
@@ -70,6 +72,8 @@ sessionStore.sync();
 
 app.use(userRoutes);
 
+
+
 // Route to get all users
 app.get('/users', async (req, res) => {
   try {
@@ -88,6 +92,8 @@ app.get('/items', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
 
 app.post('/items', upload.single('image'), [
   body('name').notEmpty().withMessage('Name is required'),
@@ -121,9 +127,93 @@ app.post('/items', upload.single('image'), [
     res.status(201).json(createdItem);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Could not create internship' });
+    res.status(500).json({ message: 'Could not add item' });
   }
-}); 
+});
+
+app.get('/fetchProcessedGarments', async (req, res) => {
+  const public_key = "498434c2db635071ca71487eef08a26e";
+  const secret_key = "df4f0273b45dab4816697f987ab2538b";
+  const headers = getAuthenticationHeader(public_key, secret_key);
+
+  const url = "https://api.revery.ai/console/v1/get_filtered_garments";
+
+  try {
+    fetch(url, {
+      method: 'GET',
+      headers: headers,
+    })
+
+      .then(response => response.json())
+      .then(data => {
+        console.log("API response:", data);
+        if (data && data.success) {
+          const formattedGarments = data.garments.map(garment => ({
+            id: garment.id,
+            gender: garment.gender,
+            image_urls: { product_image: garment.image_urls.product_image },
+            tryon: { category: garment.tryon.category, enabled: true, open_outerwear: false }
+          }));
+
+          res.json(formattedGarments);
+        } else {
+          console.log('Error uploading garment:', data);
+          res.status(500).json({ messsage: 'Error uploading garment' })
+        }
+      })
+      .catch(error => {
+        console.error('Error uploading garment:', error);
+        res.status(500).json({ message: 'Error uploading garment' });
+      });
+  } catch (error) {
+    console.error('Error fetching processed garments:', error);
+    res.status(500).json({ message: 'Error fetching processed garments' });
+  }
+});
+
+app.post('/uploadGarment', async (req, res) => {
+  const public_key = "498434c2db635071ca71487eef08a26e";
+  const secret_key = "df4f0273b45dab4816697f987ab2538b";
+  console.log("upload_garment")
+  const headers = getAuthenticationHeader(public_key, secret_key);
+  console.log("header", headers)
+
+  const url = "https://api.revery.ai/console/v1/process_new_garment";
+  const garmentData = JSON.stringify({
+    "category": "tops",
+    "gender": "male",
+    "garment_img_url": "https://revery-integration-tools.s3.us-east-2.amazonaws.com/API_website/tops.jpeg"
+  });
+
+
+  try {
+    console.log("before post");
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: garmentData
+    }
+    )
+      .then(response => response.json())
+      .then(data => {
+        console.log("API response:", data);
+        if (data && data.success) {
+          res.json(data);
+        } else {
+          console.log('Error uploading garment:', data);
+          res.status(500).json({ messsage: 'Error uploading garment' })
+        }
+      })
+      .catch(error => {
+        console.error('Error uploading garment:', error);
+        res.status(500).json({ message: 'Error uploading garment' });
+      });
+    console.log("after post/response");
+  } catch (error) {
+    console.error('Error uploading garment:', error);
+    res.status(500).json({ message: 'Error uploading garment' });
+  }
+});
 
 
 //Route to get all Cart
@@ -135,6 +225,8 @@ app.get('/carts', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
 
 sequelize.sync({ alter: true })
   .then(() => {

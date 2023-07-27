@@ -1,0 +1,43 @@
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.item-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.item-image {
+  flex: 1;
+  margin-bottom: 10px;
+}
+
+.item-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.item-details h2 {
+  margin-bottom: 5px;
+}
+
+.item-details h4 {
+  margin-bottom: 10px;
+}
+
+.item-details p {
+  margin-bottom: 0;
+}
+
+/* Add styles for the nested grid */
+.item-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}

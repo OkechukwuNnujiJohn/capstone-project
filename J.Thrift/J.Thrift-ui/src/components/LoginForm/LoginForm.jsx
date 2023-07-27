@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../../UserContext.js';
+import { UserContext } from '../../../UserContext.js';
 import './LoginForm.css'
 
 const LoginForm = () => {
@@ -30,6 +30,10 @@ const LoginForm = () => {
         const data = await response.json();
         const loggedInUser = data.user;
 
+
+        setEmail('');
+        setPassword('');
+        
         // Update the user context
         updateUser(loggedInUser);
 
