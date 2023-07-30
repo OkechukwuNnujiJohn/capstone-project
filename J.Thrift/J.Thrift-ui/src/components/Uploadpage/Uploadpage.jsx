@@ -45,7 +45,7 @@ const Uploadpage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-      try {
+    try {
       const formData = new FormData();
       Object.entries(itemsData).forEach(([key, value]) => formData.append(key, value));
 
@@ -57,20 +57,14 @@ const Uploadpage = () => {
       });
 
       if (response.status === 201) {
-        const newItem= response.data;
-        const updatedUser = {...user};
-        if(!updatedUser.itemsUploaded){
-        updatedUser.itemsUploaded = [];}updatedUser.itemsUploaded.push(newItem.id)
-
+        const newItem = response.data;
+        const updatedUser = { ...user };
+        if (!updatedUser.itemsUploaded) {
+          updatedUser.itemsUploaded = [];
+        } updatedUser.itemsUploaded.push(newItem.id)
         newItem.UserId = updatedUser.id;
-
-
-      // await Promise.all([
-       await  axios.put(`http://localhost:3000/users/${user.id}`, {itemsUploaded: updatedUser.itemsUploaded}),
-        await axios.put(`http://localhost:3000/items/${newItem.id}`,{UserId:updatedUser.id})
-      
-
-
+        await axios.put(`http://localhost:3000/users/${user.id}`, { itemsUploaded: updatedUser.itemsUploaded }),
+          await axios.put(`http://localhost:3000/items/${newItem.id}`, { UserId: updatedUser.id })
         alert('Item submitted successfully!');
         setRefreshData(prev => !prev);
         navigate('/');
@@ -87,8 +81,6 @@ const Uploadpage = () => {
       }
     }
   }
-
-  
 
   return (
     <form onSubmit={handleFormSubmit} encType="multipart/form-data">

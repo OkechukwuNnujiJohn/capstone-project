@@ -1,7 +1,6 @@
 import React from "react";
 import { UserContext, RecommendedContext, ItemsContext } from "../../../UserContext.js";
 import { useState, useEffect, useContext, createContext } from "react";
-import { object } from "prop-types";
 import "./RecommendationPage.css";
 
 function RecommendationPage({ recommended, items }) {
@@ -9,9 +8,7 @@ function RecommendationPage({ recommended, items }) {
     const { itemscontext, setItemsContext } = useContext(ItemsContext);
     const { user } = useContext(UserContext);
     const [sortedItems, setSortedItems] = useState({});
-    console.log("user:", user);
-    console.log("recRec:", recommendedcontext);
-    console.log("items:", itemscontext);
+
     useEffect(() => {
         function createSortedItems() {
             const temporarySortedItems = { ...sortedItems };
@@ -55,19 +52,11 @@ function RecommendationPage({ recommended, items }) {
 
     }, []);
 
-    // console.log(sorr);
-    console.log("sortedItems", sortedItems);
-    console.log("new iTEMScontext", itemscontext)
-
     return (
         <div className="recommendedPage">
-
             <div className="item-grid">
                 <h1>Recommended Items</h1>
-                {/* <p>{console.log(sortedItems[1][0])}</p> */}
-
                 {Object.entries(sortedItems).map(([key, value]) => {
-
                     if (key >= 1) {
                         const product = itemscontext.find((obj) => {
                             if (obj.id.toString() === value[0]) {
@@ -89,7 +78,6 @@ function RecommendationPage({ recommended, items }) {
                                     )}
                                 </div>
                                 <div className="item-card-grid">
-                                    {/* Add additional information here */}
                                 </div>
                             </div>
                         );

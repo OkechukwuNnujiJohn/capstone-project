@@ -4,10 +4,9 @@ import { MdArrowDropDown } from 'react-icons/Md';
 import { AiOutlineCheck } from 'react-icons/Ai';
 import { Link } from "react-router-dom";
 
-export default function Subbar({ handleGenderSelection, handleCategorySelection, showRecommended,showPlanPage, setShowRecommended,setShowPlanPage, user, navigate}) {
+export default function Subbar({ handleGenderSelection, handleCategorySelection, showRecommended, showPlanPage, setShowRecommended, setShowPlanPage, user, navigate }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedGender, setSelectedGender] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);

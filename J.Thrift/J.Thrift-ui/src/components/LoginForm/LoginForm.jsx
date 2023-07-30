@@ -14,7 +14,6 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      // Make the login API request
       console.log("about to fetch");
       const response = await fetch(`http://localhost:3000/users/login`, {
         method: 'POST',
@@ -24,27 +23,20 @@ const LoginForm = () => {
         body: JSON.stringify({ email, password }),
         credentials: 'include'
       });
-      console.log("login response:",response)
+      console.log("login response:", response)
 
       if (response.ok) {
         const data = await response.json();
         const loggedInUser = data.user;
 
-
         setEmail('');
         setPassword('');
-        
-        // Update the user context
         updateUser(loggedInUser);
-
-        // Navigate to the home page after successful login
         navigate('/');
       } else {
-        // Handle the login failure case
         alert('Login failed');
       }
     } catch (error) {
-      // Handle any network or API request errors
       alert('Login failed: ' + error);
     }
   };

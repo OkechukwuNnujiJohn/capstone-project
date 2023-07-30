@@ -1,6 +1,7 @@
 import pbkdf2 from 'pbkdf2';
+
 function getAuthenticationHeader(public_key, secret_key) {
-  let time =  parseInt(Date.now() / 1000);
+  let time = parseInt(Date.now() / 1000);
   var derivedKey = pbkdf2.pbkdf2Sync(secret_key, time.toString(), 128, 32, 'sha256');
   derivedKey = derivedKey.toString('hex');
 
@@ -11,8 +12,6 @@ function getAuthenticationHeader(public_key, secret_key) {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   });
-
 }
-
 
 export default getAuthenticationHeader;

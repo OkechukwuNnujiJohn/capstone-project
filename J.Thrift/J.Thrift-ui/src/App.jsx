@@ -10,18 +10,14 @@ import MyUploadsPage from './components/MyUploadsPage/MyUploadsPage';
 import RecommendationPage from './components/RecommendationPage/RecommendationPage';
 import PlanOutfit from './components/PlanOutfit/PlanOutfit'
 
-
-
 function App() {
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
-
   });
 
   const [recommendedcontext, setRecommendedContext] = useState(() => {
     try {
-      // Retrieve the product data from storage or set it to null if not found
       const storedItem = localStorage.getItem("Recommended");
       return storedItem ? JSON.parse(storedItem) : null;
     } catch (error) {
@@ -32,7 +28,6 @@ function App() {
 
   const [itemscontext, setItemsContext] = useState(() => {
     try {
-      // Retrieve the product data from storage or set it to null if not found
       const storedItem = localStorage.getItem("items");
       return storedItem ? JSON.parse(storedItem) : null;
     } catch (error) {
