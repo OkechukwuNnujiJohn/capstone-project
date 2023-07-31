@@ -32,11 +32,6 @@ function Main() {
     return a;
   })
 
-  // Step 1: Initialize the color and brand trend score objects
-  const [colorTrendScores, setColorTrendScores] = useState({});
-  const [brandTrendScores, setBrandTrendScores] = useState({});
-  console.log("user", user)
-
   useEffect(() => {
     const fetchItems = async () => {
       const response = await fetch("http://localhost:3000/items");
@@ -74,20 +69,16 @@ function Main() {
     const filtered = items.filter((item) => {
       const lowerCaseBrand = item.brand.toLowerCase();
       const lowerCaseCategory = selectedBrands.map((c) => c.toLowerCase());
-
       const isBrandMatch =
         selectedBrands.length === 0 || lowerCaseCategory.includes(lowerCaseBrand);
       const isGenderMatch =
         selectedGender.length === 0 || selectedGender.includes(item.gender);
       const isCategoryMatch =
         selectedCategory === "" || selectedCategory === item.category.toLowerCase();
-
       return isBrandMatch && isGenderMatch && isCategoryMatch;
     });
-
     setFilteredItems(filtered);
   }, [selectedBrands, selectedGender, selectedCategory, items]);
-
 
   useEffect(() => {
     if (showRecommended && user) {
@@ -104,7 +95,6 @@ function Main() {
         setRecommendations(data);
         console.log("Recommendations:", data);
       };
-
       fetchRecommendations();
     } else {
       setRecommendations([]);
@@ -124,29 +114,27 @@ function Main() {
   const handleRecommendedClick = () => {
     if (user) {
       setShowRecommended(!showRecommended);
-      navigate("/recommendations"); // Navigate to the recommendations page
+      navigate("/recommendations");
     } else {
-      navigate("/login"); // Navigate to the login page if the user is not logged in
+      navigate("/login");
     }
   };
 
   const handlePlanClick = () => {
     if (user) {
       setShowPlanPage(!showPlanPage);
-      navigate("/plananoutift"); 
+      navigate("/plananoutift");
     } else {
       navigate("/login");
     }
   };
 
   const handleProductClick = (product) => {
-    // Access the product data such as color and brand here
     const colors = recommended.color;
     const brands = recommended.brand;
     const keyExistsColor = product.color in colors;
     const temporaryRecommended = { ...recommended };
     console.log("tempRecom:", temporaryRecommended);
-
 
     if (keyExistsColor === true) {
       const temp = { ...colors };
@@ -155,9 +143,7 @@ function Main() {
     } else {
       const temporary = { ...colors, [product.color]: 1 };
       temporaryRecommended.color = temporary;
-
     }
-
     const keyExistsBrand = product.brand in brands;
     if (keyExistsBrand === true) {
       const temp2 = { ...brands };
@@ -166,16 +152,12 @@ function Main() {
     } else {
       const temporary2 = { ...brands, [product.brand]: 1 };
       temporaryRecommended.brand = temporary2;
-
     }
     setRecommended(temporaryRecommended);
     setRecommendedContext(temporaryRecommended);
     localStorage.setItem("Recommended", JSON.stringify(temporaryRecommended));
     console.log('Clicked product:', product);
   };
-
-  console.log('recommendedContext', recommendedcontext);
-
   return (
     <RefreshContext.Provider value={setRefreshData}>
       <div className="main">
@@ -188,9 +170,9 @@ function Main() {
             <>
             </>
           )}
-          {showPlanPage ?(
+          {showPlanPage ? (
             <PlanOutfit />
-          ):(
+          ) : (
             <></>
           )}
           <div className="user-info">
@@ -206,7 +188,6 @@ function Main() {
         </header>
         <div className="items-container">
           {filteredItems.map((item) => (
-
             <div className="item" key={item.id} onClick={() => handleProductClick(item)} style={{ cursor: "pointer" }}>
               <div className="item-details">
                 <h2>{item.name}</h2>
@@ -221,9 +202,6 @@ function Main() {
               </div>
             </div>
           ))}
-          {/* 
-        </>
-  )} */}
         </div>
       </div>
     </RefreshContext.Provider>

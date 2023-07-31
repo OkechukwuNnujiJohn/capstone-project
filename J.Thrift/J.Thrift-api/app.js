@@ -18,7 +18,6 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
@@ -53,8 +52,6 @@ const upload = multer({
 });
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
-// Session middleware
 app.use(
   session({
     secret: 'your-secret-key',
@@ -64,7 +61,7 @@ app.use(
     cookie: {
       sameSite: false,
       secure: false,
-      expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)) // 1 year in milliseconds
+      expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000))
     }
   })
 );
@@ -72,9 +69,6 @@ sessionStore.sync();
 
 app.use(userRoutes);
 
-
-
-// Route to get all users
 app.get('/users', async (req, res) => {
   try {
     const users = await User.findAll();
@@ -83,7 +77,7 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-//Route to get all Items
+
 app.get('/items', async (req, res) => {
   try {
     const items = await Item.findAll();
@@ -92,8 +86,6 @@ app.get('/items', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
 
 app.post('/items', upload.single('image'), [
   body('name').notEmpty().withMessage('Name is required'),
@@ -105,13 +97,10 @@ app.post('/items', upload.single('image'), [
   body('color').notEmpty().withMessage('Color is required'),
 ], async (req, res) => {
   req.body.category = req.body.category.toString();
-
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
   try {
     const newItem = {
       name: req.body.name,
@@ -131,31 +120,65 @@ app.post('/items', upload.single('image'), [
   }
 });
 
-app.get('/fetchProcessedGarments', async (req, res) => {
+app.post('/uploadGarment', async (req, res) => {
   const public_key = "498434c2db635071ca71487eef08a26e";
-  const secret_key = "df4f0273b45dab4816697f987ab2538b";
+  const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
+  console.log("upload_garment")
   const headers = getAuthenticationHeader(public_key, secret_key);
-
-  const url = "https://api.revery.ai/console/v1/get_filtered_garments";
-
+  const url = "https://api.revery.ai/console/v1/process_new_garment";
+  const garmentData = JSON.stringify({
+    "category": "bottoms",
+    "bottom_sub_category": "pants",
+    "gender": "male",
+    "garment_img_url": "https://revery-integration-tools.s3.us-east-2.amazonaws.com/API_website/bottoms.jpeg"
+  });
   try {
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: headers,
+      body: garmentData
     })
-
       .then(response => response.json())
       .then(data => {
-        console.log("API response:", data);
+        console.log("upload API response:", data);
         if (data && data.success) {
           const formattedGarments = data.garments.map(garment => ({
             id: garment.id,
             gender: garment.gender,
             image_urls: { product_image: garment.image_urls.product_image },
-            tryon: { category: garment.tryon.category, enabled: true, open_outerwear: false }
+            tryon: { category: garment.tryon.category, bottoms_sub_category: garment.tryon.bottom_sub_category, enabled: true, open_outerwear: false }
           }));
-
           res.json(formattedGarments);
+        } else {
+          console.log('Error uploading garment:', data);
+          res.status(500).json({ messsage: 'Error uploading garment' })
+        }
+      })
+      .catch(error => {
+        console.error('Error uploading garment:', error);
+        res.status(500).json({ message: 'Error uploading garment' });
+      });
+  } catch (error) {
+    console.error('Error uploading garment:', error);
+    res.status(500).json({ message: 'Error uploading garment' });
+  }
+});
+
+app.get('/fetchProcessedGarments', async (req, res) => {
+  const public_key = "498434c2db635071ca71487eef08a26e";
+  const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
+  const headers = getAuthenticationHeader(public_key, secret_key);
+  const url = "https://api.revery.ai/console/v1/get_filtered_garments";
+  try {
+    fetch(url, {
+      method: 'GET',
+      headers: headers,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("fetch API response:", data);
+        if (data && data.success) {
+          res.json(data);
         } else {
           console.log('Error uploading garment:', data);
           res.status(500).json({ messsage: 'Error uploading garment' })
@@ -171,52 +194,150 @@ app.get('/fetchProcessedGarments', async (req, res) => {
   }
 });
 
-app.post('/uploadGarment', async (req, res) => {
-  const public_key = "498434c2db635071ca71487eef08a26e";
-  const secret_key = "df4f0273b45dab4816697f987ab2538b";
-  console.log("upload_garment")
-  const headers = getAuthenticationHeader(public_key, secret_key);
-  console.log("header", headers)
-
-  const url = "https://api.revery.ai/console/v1/process_new_garment";
-  const garmentData = JSON.stringify({
-    "category": "tops",
-    "gender": "male",
-    "garment_img_url": "https://revery-integration-tools.s3.us-east-2.amazonaws.com/API_website/tops.jpeg"
-  });
-
-
+app.get('/fetchProcessedGarments/:garment_id', async (req, res) => {
+  const { garment_id } = req.params;
   try {
-    console.log("before post");
-    fetch(url, {
-      method: 'POST',
-      headers: headers,
-      body: garmentData
-    }
-    )
-      .then(response => response.json())
-      .then(data => {
-        console.log("API response:", data);
-        if (data && data.success) {
-          res.json(data);
-        } else {
-          console.log('Error uploading garment:', data);
-          res.status(500).json({ messsage: 'Error uploading garment' })
-        }
-      })
-      .catch(error => {
-        console.error('Error uploading garment:', error);
-        res.status(500).json({ message: 'Error uploading garment' });
-      });
-    console.log("after post/response");
+    const specificGarment = { id: garment_id, name: "Sample Garment", category: "Tops", gender: "male" };
+    res.json(specificGarment);
   } catch (error) {
-    console.error('Error uploading garment:', error);
-    res.status(500).json({ message: 'Error uploading garment' });
+    console.error('Error fetching specific garment:', error);
+    res.status(500).json({ message: 'Error fetching specific garment' });
   }
 });
 
+app.get('/getModels', async (req, res) => {
+  const public_key = "498434c2db635071ca71487eef08a26e";
+  const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
+  const headers = getAuthenticationHeader(public_key, secret_key);
+  const url = "https://api.revery.ai/console/v1/get_model_list";
+  try {
+    fetch(url, {
+      method: 'GET',
+      headers: headers,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("models API response:", data);
+        if (data && data.success) {
+          res.json(data);
+        } else {
+          console.error("Error fetching models.");
+          res.status(500).json({ message: "Error fetching models" });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching models:", error);
+        res.status(500).json({ message: "Error fetching models" });
+      });
+  } catch (error) {
+    console.error('Error fetching models:', error);
+    res.status(500).json({ message: 'Error fetching models' });
+  }
+});
 
-//Route to get all Cart
+app.get('/getSelectedShoes', async (req, res) => {
+  const public_key = "498434c2db635071ca71487eef08a26e";
+  const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
+  const headers = getAuthenticationHeader(public_key, secret_key);
+  const url = "https://api.revery.ai/console/v1/get_selected_shoes";
+  try {
+    fetch(`${url}?gender=male`, {
+      method: 'GET',
+      headers: headers,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("shoes API response:", data);
+        if (data && data.success) {
+          res.json(data);
+          console.log("shoe database:", data);
+        } else {
+          console.error('Error fetching selected shoes:', data);
+          res.status(500).json({ message: 'Error fetching selected shoes' });
+        }
+      }).catch(error => {
+        console.error("Error fetching shoes:", error);
+        res.status(500).json({ message: "Error fetching shoes" });
+      });
+  } catch (error) {
+    console.error('Error fetching selected shoes:', error);
+    res.status(500).json({ message: 'Error fetching selected shoes' });
+  }
+});
+app.get('/getSelectedFaces', async (req, res) => {
+  const public_key = "498434c2db635071ca71487eef08a26e";
+  const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
+  const headers = getAuthenticationHeader(public_key, secret_key);
+  const url = "https://api.revery.ai/console/v1/get_selected_faces";
+  try {
+    fetch(`${url}?gender=male`, {
+      method: 'GET',
+      headers: headers,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("faces API response:", data);
+        if (data && data.success) {
+          res.json(data);
+        } else {
+          console.error('Error fetching selected faces:', data);
+          res.status(500).json({ message: 'Error fetching selected faces' });
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching faces:", error);
+        res.status(500).json({ message: "Error fetching faces" });
+      });
+  } catch (error) {
+    console.error('Error fetching selected faces:', error);
+    res.status(500).json({ message: 'Error fetching selected faces' });
+  }
+});
+
+app.post('/requestTryOn', async (req, res) => {
+  const public_key = "498434c2db635071ca71487eef08a26e";
+  const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
+  console.log("request try-on")
+  const headers = getAuthenticationHeader(public_key, secret_key);
+  const url = "https://api.revery.ai/console/v1/request_tryon";
+  const model_id = "1697455153";
+  const requestData = JSON.stringify({
+    "garments": {
+      "tops": "498434c2db635071ca71487eef08a26e_cqoFf5pcVIlv",
+      "bottoms": "498434c2db635071ca71487eef08a26e_ORCbQYT1t5aL"
+    },
+    "model_id": model_id,
+    "background": "studio",
+  });
+  console.log("requestedData:", requestData)
+  try {
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: requestData
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("requestTryOn API response:", data);
+        if (data && data.success) {
+          console.log("data:", data);
+          res.json(data);
+        } else {
+          console.error('Error requesting try-on:', data);
+          res.status(500).json({ message: 'Error requesting try-on' });
+        }
+      })
+      .catch(error => {
+        console.error("Error requesting try-on:", error);
+        res.status(500).json({ message: "Error requesting try-on" });
+      });
+    console.log("after post/response");
+  } catch (error) {
+    console.error('Error requesting try-on:', error);
+    res.status(500).json({ message: 'Error requesting try-on' });
+  }
+});
+
 app.get('/carts', async (req, res) => {
   try {
     const carts = await Cart.findAll();
@@ -225,8 +346,6 @@ app.get('/carts', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
 
 sequelize.sync({ alter: true })
   .then(() => {

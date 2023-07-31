@@ -8,27 +8,20 @@ export default function MyUploadsPage() {
   useEffect(() => {
     const fetchMyUploads = async () => {
       try {
-        const url = user? "http://localhost:3000/items?userId=${user.id}": `http://localhost:3000/items`;
-        const response = await fetch(url,{
+        const url = user ? "http://localhost:3000/items?userId=${user.id}" : `http://localhost:3000/items`;
+        const response = await fetch(url, {
           credentials: "include",
         });
-
         if (!response.ok) {
           throw new Error('Error fetching my uploads: ' + response.statusText);
         }
-
         const data = await response.json();
         setMyUploads(data);
       } catch (error) {
         console.error('Error fetching my uploads:', error);
       }
     };
-
-    // if (user) {
-      fetchMyUploads();
-    // } else {
-    //   setMyUploads([]);
-    // }
+    fetchMyUploads();
   }, [user]);
 
   return (
@@ -42,7 +35,6 @@ export default function MyUploadsPage() {
             <img src={item.image} alt={item.name} />
             <p>Price: {item.price}</p>
             <p>Description: {item.description}</p>
-            {/* Add more item details as needed */}
           </div>
         ))
       ) : (
