@@ -65,6 +65,12 @@ const Uploadpage = () => {
         newItem.UserId = updatedUser.id;
         await axios.put(`http://localhost:3000/users/${user.id}`, { itemsUploaded: updatedUser.itemsUploaded }),
           await axios.put(`http://localhost:3000/items/${newItem.id}`, { UserId: updatedUser.id })
+
+        // Store the uploaded item in localStorage
+      const storedItems = JSON.parse(localStorage.getItem("uploadedItems")) || [];
+      storedItems.push(newItem);
+      localStorage.setItem("uploadedItems", JSON.stringify(storedItems));
+
         alert('Item submitted successfully!');
         setRefreshData(prev => !prev);
         navigate('/');
