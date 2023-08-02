@@ -8,7 +8,9 @@ export default function MyUploadsPage() {
   useEffect(() => {
     const fetchMyUploads = async () => {
       try {
-        const url = user ? "http://localhost:3000/items?userId=${user.id}" : `http://localhost:3000/items`;
+        console.log("user: ", user);
+        console.log("user.itemsUploaded: ", user?.itemsUploaded);
+        const url = "http://localhost:3000/items";
         const response = await fetch(url, {
           credentials: "include",
         });
@@ -16,7 +18,11 @@ export default function MyUploadsPage() {
           throw new Error('Error fetching my uploads: ' + response.statusText);
         }
         const data = await response.json();
-        setMyUploads(data);
+        console.log("data: ", data);
+
+          const filteredData = data.filter((item) =>user?.itemsUploaded?.includes(item.id));
+          console.log("filteredData: ", filteredData);
+          setMyUploads(filteredData);
       } catch (error) {
         console.error('Error fetching my uploads:', error);
       }
@@ -32,7 +38,11 @@ export default function MyUploadsPage() {
           <div key={item.id}>
             <h2>{item.name}</h2>
             <h3>Brand: {item.brand}</h3>
-            <img src={item.image} alt={item.name} />
+            {item.image.startsWith('http') ? (
+                  <img src={item.image} alt={item.name} />
+                ) : (
+                  <img src={`http://localhost:3000/images/${item.image}`} alt={item.name} />
+                )}
             <p>Price: {item.price}</p>
             <p>Description: {item.description}</p>
           </div>
