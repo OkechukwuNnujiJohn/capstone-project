@@ -8,11 +8,13 @@ import { dirname } from 'path';
 import { sequelize } from './database.js';
 import { User, Cart, Item, CartItem } from './models/index.js';
 import axios from 'axios';
+import bodyParser from 'body-parser';
 import getAuthenticationHeader from './authenticatonHeader.js';
 import userRoutes from './routes/users.js';
 import SequelizeStoreInit from 'connect-session-sequelize';
 import { body, validationResult } from 'express-validator';
 import multer from 'multer';
+import { log } from 'console';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -24,6 +26,12 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(morgan('dev'))
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store'); // Disable caching
+  next();
+});
 
 const SequelizeStore = SequelizeStoreInit(session.Store);
 const sessionStore = new SequelizeStore({
@@ -165,10 +173,16 @@ app.post('/uploadGarment', async (req, res) => {
 });
 
 app.get('/fetchProcessedGarments', async (req, res) => {
+  const {gender,category}=req.query;
   const public_key = "498434c2db635071ca71487eef08a26e";
   const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
   const headers = getAuthenticationHeader(public_key, secret_key);
-  const url = "https://api.revery.ai/console/v1/get_filtered_garments";
+  let url = `https://api.revery.ai/console/v1/get_filtered_garments?gender=${gender}`;
+
+  if (category && category !== "all") {
+    url += `&category=${category}`;
+  }
+
   try {
     fetch(url, {
       method: 'GET',
@@ -206,10 +220,11 @@ app.get('/fetchProcessedGarments/:garment_id', async (req, res) => {
 });
 
 app.get('/getModels', async (req, res) => {
+  const { gender } = req.query;
   const public_key = "498434c2db635071ca71487eef08a26e";
   const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
   const headers = getAuthenticationHeader(public_key, secret_key);
-  const url = "https://api.revery.ai/console/v1/get_model_list";
+  const url = `https://api.revery.ai/console/v1/get_model_list?gender=${gender}`;
   try {
     fetch(url, {
       method: 'GET',
@@ -236,12 +251,13 @@ app.get('/getModels', async (req, res) => {
 });
 
 app.get('/getSelectedShoes', async (req, res) => {
+  const { gender } = req.query;
   const public_key = "498434c2db635071ca71487eef08a26e";
   const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
   const headers = getAuthenticationHeader(public_key, secret_key);
-  const url = "https://api.revery.ai/console/v1/get_selected_shoes";
+  const url = `https://api.revery.ai/console/v1/get_selected_shoes?gender=${gender}`;
   try {
-    fetch(`${url}?gender=male`, {
+    fetch(`${url}`, {
       method: 'GET',
       headers: headers,
     })
@@ -265,12 +281,13 @@ app.get('/getSelectedShoes', async (req, res) => {
   }
 });
 app.get('/getSelectedFaces', async (req, res) => {
+  const { gender } = req.query;
   const public_key = "498434c2db635071ca71487eef08a26e";
   const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
   const headers = getAuthenticationHeader(public_key, secret_key);
-  const url = "https://api.revery.ai/console/v1/get_selected_faces";
+  const url = `https://api.revery.ai/console/v1/get_selected_faces?gender=${gender}`;
   try {
-    fetch(`${url}?gender=male`, {
+    fetch(`${url}`, {
       method: 'GET',
       headers: headers,
     })
@@ -300,13 +317,20 @@ app.post('/requestTryOn', async (req, res) => {
   console.log("request try-on")
   const headers = getAuthenticationHeader(public_key, secret_key);
   const url = "https://api.revery.ai/console/v1/request_tryon";
-  const model_id = "1697455153";
+
+  const {garments, model_id}=req.body;
+  // const model_id = "1697455153";
+  console.log("tops:",garments.tops);
+  console.log("bottoms:",garments.bottoms);
+  console.log("outerwear:",garments.outerwear);
+  console.log("model_id:",model_id);
   const requestData = JSON.stringify({
-    "garments": {
-      "tops": "498434c2db635071ca71487eef08a26e_cqoFf5pcVIlv",
-      "bottoms": "498434c2db635071ca71487eef08a26e_ORCbQYT1t5aL"
+    garments: {
+      tops: garments.tops,
+      bottoms: garments.bottoms,
+      outerwear: garments.outerwear,
     },
-    "model_id": model_id,
+    model_id,
     "background": "studio",
   });
   console.log("requestedData:", requestData)
