@@ -9,11 +9,10 @@ function PlanOutfit() {
     const [modelFiles, setModelFiles] = useState([]);
     const [shoePaths, setShoePaths] = useState({});
     const [facePaths, setFacePaths] = useState([]);
-    const [selectedGender, setSelectedGender] = useState("male"); // Default to "male"
+    const [selectedGender, setSelectedGender] = useState("male");
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [scrollPosition, setScrollPosition] = useState(0);
     const [selectedModel, setSelectedModel] = useState(null);
-    const [selectedGarment, setSelectedGarment] = useState(null);
     const [selectedTop, setSelectedTop] = useState('498434c2db635071ca71487eef08a26e_tmn6BpX1bhF9');
     const [selectedBottom, setSelectedBottom] = useState('498434c2db635071ca71487eef08a26e_HK7q2BMxKTHA');
     const [selectedOuterwear, setSelectedOuterwear] = useState('498434c2db635071ca71487eef08a26e_ORCbQYT1t5aL');
@@ -44,7 +43,6 @@ function PlanOutfit() {
     };
 
     const fetchModels = (gender) => {
-        // Fetch the list of models when the component mounts
         const uniqueUrl = `http://localhost:3000/getModels?gender=${gender}&timestamp=${Date.now()}`;
         axios.get(uniqueUrl)
             .then((response) => {
@@ -65,7 +63,6 @@ function PlanOutfit() {
         axios.get(uniqueUrl)
             .then((response) => {
                 if (response.data && response.data.success) {
-                    // Store the shoe image paths in state
                     setShoePaths(response.data.shoe_paths_dict);
                 } else {
                     console.error("Error fetching selected shoes.");
@@ -81,7 +78,6 @@ function PlanOutfit() {
         axios.get(uniqueUrl)
             .then((response) => {
                 if (response.data && response.data.success) {
-                    // Store the face image paths in state
                     setFacePaths(response.data.face_ids);
                 } else {
                     console.error("Error fetching selected faces.");
@@ -115,7 +111,7 @@ function PlanOutfit() {
             console.log();
             setSelectedTop(garment.id);
             handleRequestTryOn();
-        }else if (garment.tryon && garment.tryon.category === "bottoms") {
+        } else if (garment.tryon && garment.tryon.category === "bottoms") {
             setSelectedBottom(garment.id);
             handleRequestTryOn();
         }
@@ -125,25 +121,20 @@ function PlanOutfit() {
         }
     };
 
-    // Function to request a new try-on image
     const handleRequestTryOn = () => {
         if (!selectedModel) {
             console.error("Please Select a model")
             return;
         }
-        console.log("tops:",selectedTop);
-        console.log("bottoms:",selectedBottom);
         const requestData = {
             garments: {
                 tops: selectedTop,
                 bottoms: selectedBottom,
-                outerwear:selectedOuterwear,
+                outerwear: selectedOuterwear,
             },
             model_id: selectedModel,
             background: "studio",
         };
-
-        console.log(requestData);
 
         axios.post("http://localhost:3000/requestTryOn", requestData)
             .then((response) => {
@@ -160,7 +151,6 @@ function PlanOutfit() {
             });
     };
 
-    // Function to upload a new garment
     const handleUploadGarment = () => {
         axios.post("http://localhost:3000/uploadGarment")
             .then((response) => {
@@ -189,18 +179,12 @@ function PlanOutfit() {
         handleRequestTryOn();
     };
 
-
-
     return (
         <div className="plan-outfit-container">
             <div className="left-div">
                 <h2>Plan Your Outfit</h2>
                 {selectedModel && (
                     <div className="selected-model">
-                        {/* <img
-                            src={`https://media.revery.ai/generated_model_image/${modelFiles[models.indexOf(selectedModel)]}.png`}
-                            alt={`Model ${selectedModel}`}
-                        /> */}
                         <img src={selectedModelImage} alt={`Model ${selectedModel}`} />
                     </div>
                 )}
@@ -271,23 +255,10 @@ function PlanOutfit() {
                     </div>
 
                     <div className="selected-garments">
-                        {selectedTop && typeof selectedTop === 'object' && selectedTop.image_urls && selectedTop.image_urls.product_image
-                        // && (
-                            // <div className="selected-garment">
-                            //     {/* <img src={selectedTop.image_urls.product_image} alt={`Top ${selectedTop.id}`} /> */}
-                            // </div>
-                        // )
-                        }
-                        {selectedBottom && typeof selectedBottom === 'object' && selectedBottom.image_urls && selectedBottom.image_urls.product_image
-                        // && (
-                            // <div className="selected-garment">
-                            //     <img src={selectedBottom.image_urls.product_image} alt={`Bottom ${selectedBottom.id}`} />
-                            // </div>
-                        // )
-                        }
+                        {selectedTop && typeof selectedTop === 'object' && selectedTop.image_urls && selectedTop.image_urls.product_image}
+                        {selectedBottom && typeof selectedBottom === 'object' && selectedBottom.image_urls && selectedBottom.image_urls.product_image}
                     </div>
                 </div>
-
 
                 {garments.map((garment) => (
                     <div key={garment.id} className="garment-card" onClick={() => handleSelectGarment(garment)}>
@@ -303,20 +274,12 @@ function PlanOutfit() {
 
             <button onClick={handleUploadGarment}>Upload Garment</button>
 
-            {/* {selectedModelImage && (
-                <div className="try-on-image">
-                    <img src={selectedModelImage} alt="Try-On Image" />
-                </div>
-            )} */}
-
-
             {specificGarment && (
                 <div>
                     <h2>Specific Garment Details</h2>
                     <div>Garment ID: {specificGarment.id}</div>
                 </div>
             )}
-            {/* <button onClick={handleRequestTryOn(selectedTop?.id, selectedBottom?.id)}>Request Try-on</button> */}
         </div>
     );
 }

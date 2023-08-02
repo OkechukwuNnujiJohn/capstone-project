@@ -7,14 +7,12 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { sequelize } from './database.js';
 import { User, Cart, Item, CartItem } from './models/index.js';
-import axios from 'axios';
 import bodyParser from 'body-parser';
 import getAuthenticationHeader from './authenticatonHeader.js';
 import userRoutes from './routes/users.js';
 import SequelizeStoreInit from 'connect-session-sequelize';
 import { body, validationResult } from 'express-validator';
 import multer from 'multer';
-import { log } from 'console';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +27,7 @@ app.use(morgan('dev'))
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.set('Cache-Control', 'no-store'); // Disable caching
+  res.set('Cache-Control', 'no-store');
   next();
 });
 
@@ -50,7 +48,6 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
-    // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
       return cb(new Error('Only image files are allowed!'), false);
     }
@@ -314,16 +311,11 @@ app.get('/getSelectedFaces', async (req, res) => {
 app.post('/requestTryOn', async (req, res) => {
   const public_key = "498434c2db635071ca71487eef08a26e";
   const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
-  console.log("request try-on")
   const headers = getAuthenticationHeader(public_key, secret_key);
   const url = "https://api.revery.ai/console/v1/request_tryon";
 
   const {garments, model_id}=req.body;
-  // const model_id = "1697455153";
-  console.log("tops:",garments.tops);
-  console.log("bottoms:",garments.bottoms);
-  console.log("outerwear:",garments.outerwear);
-  console.log("model_id:",model_id);
+
   const requestData = JSON.stringify({
     garments: {
       tops: garments.tops,
@@ -355,7 +347,6 @@ app.post('/requestTryOn', async (req, res) => {
         console.error("Error requesting try-on:", error);
         res.status(500).json({ message: "Error requesting try-on" });
       });
-    console.log("after post/response");
   } catch (error) {
     console.error('Error requesting try-on:', error);
     res.status(500).json({ message: 'Error requesting try-on' });
