@@ -27,7 +27,6 @@ function RecommendationPage({ recommended, items }) {
                         temporarySortedItems[item.id] = score;
                     }
                 } else {
-
                     if (colors in user.favoriteColors) {
                         score = 20
                         temporarySortedItems[item.id] = score;
@@ -42,6 +41,14 @@ function RecommendationPage({ recommended, items }) {
                     let score = recommendedcontext.brand[brands];
                     score *= 10;
                     temporarySortedItems[item.id] += score;
+                }
+
+                if(user.itemsUploaded && user.itemsUploaded.includes(item.id)){
+                    temporarySortedItems[item.id] += 20;
+                }
+
+                if(user.gender === item.gender){
+                    temporarySortedItems[item.id] +=20;
                 }
                 console.log(temporarySortedItems);
                 const sorr = Object.entries(temporarySortedItems).sort(([, scoreA], [, scoreB]) => (scoreB - scoreA));
