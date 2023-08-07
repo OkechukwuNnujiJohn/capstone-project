@@ -17,7 +17,7 @@ function PlanOutfit() {
     const [selectedBottom, setSelectedBottom] = useState('498434c2db635071ca71487eef08a26e_HK7q2BMxKTHA');
     const [selectedOuterwear, setSelectedOuterwear] = useState(null);
     const [selectedModelImage, setSelectedModelImage] = useState("1697455153");
-    const [showShoes, setShowShoes] = useState(false);
+
 
     useEffect(() => {
         fetchGarments(selectedGender, selectedCategory);
@@ -107,9 +107,6 @@ function PlanOutfit() {
             });
     };
 
-    const handleShowShoes = ()=>{
-        setShowShoes(!showShoes);
-    }
     const handleSelectGarment = (garment) => {
         if (garment.tryon && garment.tryon.category === "tops") {
             console.log();
@@ -256,7 +253,7 @@ function PlanOutfit() {
                             Outerwear
                         </button>
                         <button
-                            onClick={handleShowShoes}
+                            onClick={() => handleCategoryChange("shoes")}
                             style={{ fontWeight: selectedCategory === "shoes" ? "bold" : "normal" }}
                         >
                             Shoes
@@ -280,16 +277,6 @@ function PlanOutfit() {
                     </div>
                 ))}
             </div>
-
-            {showShoes && Object.keys(shoePaths.shoe_paths_dict).length>0 && (
-                <div className="shoe_container">
-                    {shoePaths.shoe_model_ids.map((shoeModelId)=> (
-                        <img key ={shoeModelId} src={`https://revery-e-commerce-images.s3.us-east-2.amazonaws.com/${shoePaths.shoe_paths_dict[shoeModelId]}`}
-                        alt = {`Shoe ${shoeModelId}`}/>
-                    ))
-                    }
-                </div>
-            )}
 
             <button onClick={handleUploadGarment}>Upload Garment</button>
 
