@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import session from 'express-session';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -147,7 +147,6 @@ const secret_key = "df14d2ab37150fcd9570a50e45daebcc";
 const headers = getAuthenticationHeader(public_key, secret_key);
 
 const uploadGarment = async (req, res) => {
-  console.log("upload_garment")
   const url = "https://api.revery.ai/console/v1/process_new_garment";
   const garmentData = JSON.stringify({
     "category": "bottoms",
@@ -163,7 +162,6 @@ const uploadGarment = async (req, res) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("upload API response:", data);
         if (data && data.success) {
           const formattedGarments = data.garments.map(garment => ({
             id: garment.id,
@@ -173,17 +171,17 @@ const uploadGarment = async (req, res) => {
           }));
           res.json(formattedGarments);
         } else {
-          console.log('Error uploading garment:', data);
-          res.status(500).json({ messsage: 'Error uploading garment' })
+          console.error('Error uploading garment:', data);
+          res.status(200).json({ messsage: 'Error uploading garment' })
         }
       })
       .catch(error => {
         console.error('Error uploading garment:', error);
-        res.status(500).json({ message: 'Error uploading garment' });
+        res.status(200).json({ message: 'Error uploading garment' });
       });
   } catch (error) {
     console.error('Error uploading garment:', error);
-    res.status(500).json({ message: 'Error uploading garment' });
+    res.status(200).json({ message: 'Error uploading garment' });
   }
 };
 
@@ -200,23 +198,23 @@ const fetchProcessedGarments = async (req, res) => {
       method: 'GET',
       headers: headers,
     })
+
       .then(response => response.json())
       .then(data => {
-        console.log("fetch API response:", data);
         if (data && data.success) {
           res.json(data);
         } else {
-          console.log('Error uploading garment:', data);
-          res.status(500).json({ messsage: 'Error uploading garment' })
+          console.error('Error uploading garment:', data);
+          res.status(200).json({ messsage: 'Error uploading garment' })
         }
       })
       .catch(error => {
         console.error('Error uploading garment:', error);
-        res.status(500).json({ message: 'Error uploading garment' });
+        res.status(200).json({ message: 'Error uploading garment' });
       });
   } catch (error) {
-    console.error('Error fetching processed garments:', error);
-    res.status(500).json({ message: 'Error fetching processed garments' });
+    console.error('Error uploading garments:', error);
+    res.status(200).json({ message: 'Error fetching processed garments' });
   }
 };
 
@@ -227,7 +225,7 @@ const fetchSpecificGarment = async (req, res) => {
     res.json(specificGarment);
   } catch (error) {
     console.error('Error fetching specific garment:', error);
-    res.status(500).json({ message: 'Error fetching specific garment' });
+    res.status(200).json({ message: 'Error fetching specific garment' });
   }
 };
 
@@ -241,21 +239,20 @@ const getModels = async (req, res) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("models API response:", data);
         if (data && data.success) {
           res.json(data);
         } else {
           console.error("Error fetching models.");
-          res.status(500).json({ message: "Error fetching models" });
+          res.status(200).json({ message: "Error fetching models" });
         }
       })
       .catch((error) => {
         console.error("Error fetching models:", error);
-        res.status(500).json({ message: "Error fetching models" });
+        res.status(200).json({ message: "Error fetching models" });
       });
   } catch (error) {
     console.error('Error fetching models:', error);
-    res.status(500).json({ message: 'Error fetching models' });
+    res.status(200).json({ message: 'Error fetching models' });
   }
 };
 
@@ -269,21 +266,19 @@ const getSelectedShoes = async (req, res) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("shoes API response:", data);
         if (data && data.success) {
           res.json(data);
-          console.log("shoe database:", data);
         } else {
           console.error('Error fetching selected shoes:', data);
-          res.status(500).json({ message: 'Error fetching selected shoes' });
+          res.status(200).json({ message: 'Error fetching selected shoes' });
         }
       }).catch(error => {
         console.error("Error fetching shoes:", error);
-        res.status(500).json({ message: "Error fetching shoes" });
+        res.status(200).json({ message: "Error fetching shoes" });
       });
   } catch (error) {
     console.error('Error fetching selected shoes:', error);
-    res.status(500).json({ message: 'Error fetching selected shoes' });
+    res.status(200).json({ message: 'Error fetching selected shoes' });
   }
 };
 
@@ -297,27 +292,25 @@ const getSelectedFaces = async (req, res) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("faces API response:", data);
         if (data && data.success) {
           res.json(data);
         } else {
           console.error('Error fetching selected faces:', data);
-          res.status(500).json({ message: 'Error fetching selected faces' });
+          res.status(200).json({ message: 'Error fetching selected faces' });
         }
       })
       .catch(error => {
         console.error("Error fetching faces:", error);
-        res.status(500).json({ message: "Error fetching faces" });
+        res.status(200).json({ message: "Error fetching faces" });
       });
   } catch (error) {
     console.error('Error fetching selected faces:', error);
-    res.status(500).json({ message: 'Error fetching selected faces' });
+    res.status(200).json({ message: 'Error fetching selected faces' });
   }
 };
 
 const requestTryOn = async (req, res) => {
   const url = "https://api.revery.ai/console/v1/request_tryon";
-
   const { garments, model_id } = req.body;
 
   const requestData = JSON.stringify({
@@ -329,7 +322,6 @@ const requestTryOn = async (req, res) => {
     model_id,
     "background": "studio",
   });
-  console.log("requestedData:", requestData)
   try {
     fetch(url, {
       method: 'POST',
@@ -338,22 +330,20 @@ const requestTryOn = async (req, res) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("requestTryOn API response:", data);
         if (data && data.success) {
-          console.log("data:", data);
           res.json(data);
         } else {
           console.error('Error requesting try-on:', data);
-          res.status(500).json({ message: 'Error requesting try-on' });
+          res.status(200).json({ message: 'Error requesting try-on' });
         }
       })
       .catch(error => {
         console.error("Error requesting try-on:", error);
-        res.status(500).json({ message: "Error requesting try-on" });
+        res.status(200).json({ message: "Error requesting try-on" });
       });
   } catch (error) {
     console.error('Error requesting try-on:', error);
-    res.status(500).json({ message: 'Error requesting try-on' });
+    res.status(200).json({ message: 'Error requesting try-on' });
   }
 };
 

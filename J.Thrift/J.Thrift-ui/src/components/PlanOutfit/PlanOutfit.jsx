@@ -17,7 +17,8 @@ function PlanOutfit() {
     const [selectedBottom, setSelectedBottom] = useState('498434c2db635071ca71487eef08a26e_HK7q2BMxKTHA');
     const [selectedOuterwear, setSelectedOuterwear] = useState(null);
     const [selectedModelImage, setSelectedModelImage] = useState("1697455153");
-
+    const [error, setError] = useState(null);
+    const [selectedGarment, setSelectedGarment] = useState(null);
 
     useEffect(() => {
         fetchGarments(selectedGender, selectedCategory);
@@ -34,8 +35,6 @@ function PlanOutfit() {
             .then((response) => {
                 if (response.data && response.data.garments) {
                     setGarments(response.data.garments);
-                } else {
-                    console.error("Error fetching processed garments.");
                 }
             })
             .catch((error) => {
@@ -50,8 +49,6 @@ function PlanOutfit() {
                 if (response.data && response.data.success) {
                     setModels(response.data.models);
                     setModelFiles(response.data.model_files);
-                } else {
-                    console.error("Error fetching models.");
                 }
             })
             .catch((error) => {
@@ -65,8 +62,6 @@ function PlanOutfit() {
             .then((response) => {
                 if (response.data && response.data.success) {
                     setShoePaths(response.data.shoe_paths_dict);
-                } else {
-                    console.error("Error fetching selected shoes.");
                 }
             })
             .catch((error) => {
@@ -80,8 +75,6 @@ function PlanOutfit() {
             .then((response) => {
                 if (response.data && response.data.success) {
                     setFacePaths(response.data.face_ids);
-                } else {
-                    console.error("Error fetching selected faces.");
                 }
             })
             .catch((error) => {
@@ -94,7 +87,6 @@ function PlanOutfit() {
         axios.get(`http://localhost:3000/fetchProcessedGarments/${garment_id}`)
             .then((response) => {
                 if (response.data) {
-                    console.log("Specific garment fetched successfully:", response.data);
                     setSpecificGarment(response.data);
                 } else {
                     console.error("Error fetching specific garment.");
@@ -108,17 +100,34 @@ function PlanOutfit() {
     };
 
     const handleSelectGarment = (garment) => {
-        if (garment.tryon && garment.tryon.category === "tops") {
-            console.log();
+        setSelectedGarment(garment);
+        if(!selectedModel){
+            setError("Please selelct a model");
+            return;
+        }
+        if(!garment.tryon){
+            setError("Select a garment");
+            return;
+        }
+        if(garment.tryon.category === "tops" && !selectedBottom){
+            setError("Select a bottom");
+            return;
+        }
+        if (garment.tryon.category === "bottoms" && !selectedTop){
+            setError("Select a top");
+            return;
+        }
+        setError(null);
+        if (garment.tryon.category === "tops") {
             setSelectedTop(garment.id);
             setSelectedOuterwear(null);
             handleRequestTryOn();
-        } else if (garment.tryon && garment.tryon.category === "bottoms") {
+        } else if (garment.tryon.category === "bottoms") {
             setSelectedBottom(garment.id);
             setSelectedOuterwear(null);
             handleRequestTryOn();
         }
-        else if (garment.tryon && garment.tryon.category === "outerwear") {
+        else if (garment.tryon.category === "outerwear") {
             setSelectedOuterwear(garment.id);
             handleRequestTryOn();
         }
@@ -126,9 +135,25 @@ function PlanOutfit() {
 
     const handleRequestTryOn = () => {
         if (!selectedModel) {
-            console.error("Please Select a model")
+            setError("Please Select a model")
             return;
         }
+        if (!selectedGarment) {
+            setError("Select a garment");
+            return;
+        }
+
+        if(selectedOuterwear && !selectedTop){
+            setError("Select A top")
+            return;
+        }
+        if(selectedTop &&!selectedBottom){
+            setError("Select A bottom")
+            return;
+        }
+
+        setError(null);
+
         const garments= {
             tops: selectedTop,
             bottoms: selectedBottom,
@@ -146,14 +171,12 @@ function PlanOutfit() {
             .then((response) => {
                 if (response.data) {
                     const modelFile = response.data.model_metadata.model_file;
-                    console.log("Model File:", modelFile);
                     setSelectedModelImage(`https://media.revery.ai/generated_model_image/${modelFile}.png`);
                 } else {
                     console.error("Error requesting try-on.");
                 }
             })
-            .catch((error) => {
-                console.error("Error requesting try-on:", error);
+            .catch(() => {
             });
     };
 
@@ -161,13 +184,12 @@ function PlanOutfit() {
         axios.post("http://localhost:3000/uploadGarment")
             .then((response) => {
                 if (response.data) {
-                    console.log("Garment uploaded successfully:", response.data.garment_id);
+                    setError("Garment uploaded successfull");
                 } else {
                     console.error("Error uploading garment.");
                 }
             })
-            .catch((error) => {
-                console.error("Error uploading garment:", error);
+            .catch(() => {
             });
     };
 
@@ -187,6 +209,7 @@ function PlanOutfit() {
 
     return (
         <div className="plan-outfit-container">
+            {error && <div className="error-message">{error}</div>}
             <div className="left-div">
                 <h2>Plan Your Outfit</h2>
                 {selectedModel && (
