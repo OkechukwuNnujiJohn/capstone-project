@@ -148,11 +148,12 @@ const headers = getAuthenticationHeader(public_key, secret_key);
 
 const uploadGarment = async (req, res) => {
   const url = "https://api.revery.ai/console/v1/process_new_garment";
+  const { category, bottoms_sub_category, gender, garment_img_url } = req.body;
   const garmentData = JSON.stringify({
-    "category": "bottoms",
-    "bottom_sub_category": "pants",
-    "gender": "male",
-    "garment_img_url": "https://revery-integration-tools.s3.us-east-2.amazonaws.com/API_website/bottoms.jpeg"
+    category,
+    gender,
+    bottoms_sub_category,
+    garment_img_url,
   });
   try {
     fetch(url, {
@@ -167,12 +168,16 @@ const uploadGarment = async (req, res) => {
             id: garment.id,
             gender: garment.gender,
             image_urls: { product_image: garment.image_urls.product_image },
-            tryon: { category: garment.tryon.category, bottoms_sub_category: garment.tryon.bottom_sub_category, enabled: true, open_outerwear: false }
+            tryon: { category: garment.tryon.category, bottoms_sub_category: garment.tryon.bottoms_sub_category, enabled: true, open_outerwear: false }
           }));
-          res.json(formattedGarments);
+          res.json({
+            garments: formattedGarments,
+            success: true,
+            total_page: 1 // You might need to adjust this value based on your actual response
+          });
         } else {
           console.error('Error uploading garment:', data);
-          res.status(200).json({ messsage: 'Error uploading garment' })
+          res.status(200).json({ messsage: 'Error uploading garment' });
         }
       })
       .catch(error => {
@@ -184,6 +189,7 @@ const uploadGarment = async (req, res) => {
     res.status(200).json({ message: 'Error uploading garment' });
   }
 };
+
 
 const fetchProcessedGarments = async (req, res) => {
   const { gender, category } = req.query;

@@ -4,24 +4,18 @@ import { User } from '../models/user.js';
 import { Item } from '../models/item.js';
 
 const router = express.Router();
-console.log(("first siting"));
 router.post('/users', async (req, res) => {
-  console.log("it got here");
   const { first_name, last_name, email, gender, password, favoriteColors, favoriteBrands } = req.body;
-  console.log("body", req.body);
   try {
     const existingUser = await User.findOne({
       where: { email }
     });
-    console.log("user not found:", existingUser);
     if (existingUser) {
       return res.status(400).json({ error: 'Username or email already exists' });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ first_name, last_name, email, gender, password: hashedPassword, favoriteColors: favoriteColors, favoriteBrands: favoriteBrands });
-    console.log("newUser", newUser);
     req.session.user = newUser;
-    console.log("newuser:", newUser);
     res.json({ user: newUser });
   } catch (error) {
     console.error(error);
@@ -30,7 +24,6 @@ router.post('/users', async (req, res) => {
 });
 router.post('/users/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log("login it worked")
   try {
     const user = await User.findOne({ where: { email } });
     if (!user) {
