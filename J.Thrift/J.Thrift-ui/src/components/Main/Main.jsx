@@ -93,7 +93,6 @@ function Main() {
         });
         const data = await response.json();
         setRecommendations(data);
-        console.log("Recommendations:", data);
       };
       fetchRecommendations();
     } else {
@@ -134,7 +133,6 @@ function Main() {
     const brands = recommended.brand;
     const keyExistsColor = product.color in colors;
     const temporaryRecommended = { ...recommended };
-    console.log("tempRecom:", temporaryRecommended);
 
     if (keyExistsColor === true) {
       const temp = { ...colors };
@@ -156,7 +154,6 @@ function Main() {
     setRecommended(temporaryRecommended);
     setRecommendedContext(temporaryRecommended);
     localStorage.setItem("Recommended", JSON.stringify(temporaryRecommended));
-    console.log('Clicked product:', product);
   };
   return (
     <RefreshContext.Provider value={setRefreshData}>

@@ -4,6 +4,8 @@ import { RefreshContext } from '../Main/Main.JSX';
 import { useNavigate } from 'react-router-dom';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { UserContext } from '../../../UserContext';
+import { ItemsContext } from '../../../UserContext';
+import './Uploadpage.css';
 
 const Uploadpage = () => {
   const [itemsData, setItemsData] = useState({
@@ -20,6 +22,7 @@ const Uploadpage = () => {
   const setRefreshData = useContext(RefreshContext);
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+  const { item } = useContext(ItemsContext);
 
   if (!user) {
     navigate('/login');
@@ -61,15 +64,12 @@ const Uploadpage = () => {
         const updatedUser = { ...user };
         if (!updatedUser.itemsUploaded) {
           updatedUser.itemsUploaded = [];
-        } updatedUser.itemsUploaded.push(newItem.id)
+        } updatedUser.itemsUploaded.push(newItem.id);
         newItem.UserId = updatedUser.id;
-        await axios.put(`http://localhost:3000/users/${user.id}`, { itemsUploaded: updatedUser.itemsUploaded }),
-          await axios.put(`http://localhost:3000/items/${newItem.id}`, { UserId: updatedUser.id })
-
-        // Store the uploaded item in localStorage
-      const storedItems = JSON.parse(localStorage.getItem("uploadedItems")) || [];
-      storedItems.push(newItem);
-      localStorage.setItem("uploadedItems", JSON.stringify(storedItems));
+        await axios.put(`http://localhost:3000/users/${user.id}`, { itemsUploaded: updatedUser.itemsUploaded })
+        const storedItems = JSON.parse(localStorage.getItem("uploadedItems")) || [];
+        storedItems.push(newItem);
+        localStorage.setItem("uploadedItems", JSON.stringify(storedItems));
 
         alert('Item submitted successfully!');
         setRefreshData(prev => !prev);
@@ -80,10 +80,6 @@ const Uploadpage = () => {
         const serverErrors = error.response.data.errors;
         const errorMessages = serverErrors.map(err => err.msg);
         setErrors(errorMessages);
-      } else if (error.request) {
-        setErrors(['Network error, please try again']);
-      } else {
-        setErrors(['An error occurred, please try again']);
       }
     }
   }
@@ -91,36 +87,48 @@ const Uploadpage = () => {
   return (
     <form onSubmit={handleFormSubmit} encType="multipart/form-data">
       <h2>Upload your Item</h2>
-      {errors.map((error, index) => <p key={index} className="error">{error}</p>)}
-      <label>Name:</label>
-      <input type="text" name="name" required onChange={handleInputChange} />
+      <div className="upload-wrapper">
+        {errors.map((error, index) => <p key={index} className="error">{error}</p>)}
 
-      <label>Category:</label>
-      <input type="text" name="category" required onChange={handleInputChange} />
+        <div className='label-input-group'>
+          <label>Name:</label>
+          <input type="text" name="name" required onChange={handleInputChange} />
+        </div>
+        <div className='label-input-group'>
+          <label>Category:</label>
+          <input type="text" name="category" required onChange={handleInputChange} />
+        </div>
+        <div className='label-input-group'>
+          <label>Gender:</label>
+          <input type="text" name="gender" required onChange={handleInputChange} />
+        </div>
+        <div className='label-input-group'>
+          <label>Brand:</label>
+          <input type="text" name="brand" required onChange={handleInputChange} />
+        </div>
+        <div className='label-input-group'>
+          <label>Price:</label>
+          <input type="text" name="price" required onChange={handleInputChange} />
+        </div>
+        <div className='label-input-group'>
+          <label>Description:</label>
+          <textarea name="description" required onChange={handleInputChange} />
+        </div>
+        <div className='label-input-group'>
+          <label>Color:</label>
+          <input type="text" name="color" required onChange={handleInputChange} />
+        </div>
+        <div className='label-input-group'>
+          <label>Image:</label>
+          <input type="file" name="image" required onChange={handleFileChange} />
+        </div>
 
-      <label>Gender:</label>
-      <input type="text" name="gender" required onChange={handleInputChange} />
-
-      <label>Brand:</label>
-      <input type="text" name="brand" required onChange={handleInputChange} />
-
-      <label>Price:</label>
-      <input type="text" name="price" required onChange={handleInputChange} />
-
-      <label>Description:</label>
-      <textarea name="description" required onChange={handleInputChange} />
-
-      <label>Color:</label>
-      <input type="text" name="color" required onChange={handleInputChange} />
-
-      <label>Image:</label>
-      <input type="file" name="image" required onChange={handleFileChange} />
-
-      <div className="form-button-group">
-        <button type="submit">Submit</button>
-        <button className="close-btn" onClick={() => navigate('/')}>
-          <IoIosCloseCircleOutline size={30} />
-        </button>
+        <div className="form-button-group">
+          <button type="submit">Submit</button>
+          <button className="close-btn" onClick={() => navigate('/')}>
+            <IoIosCloseCircleOutline size={30} />
+          </button>
+        </div>
       </div>
     </form>
   );

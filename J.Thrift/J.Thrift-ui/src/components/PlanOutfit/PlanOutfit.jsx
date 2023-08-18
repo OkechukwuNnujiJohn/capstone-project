@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { AiFillHome } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 import './PlanOutfit.css';
 
 function PlanOutfit() {
+    const navigate = useNavigate();
     const [garments, setGarments] = useState([]);
     const [specificGarment, setSpecificGarment] = useState(null);
     const [models, setModels] = useState([])
@@ -19,13 +22,39 @@ function PlanOutfit() {
     const [selectedModelImage, setSelectedModelImage] = useState("1697455153");
     const [error, setError] = useState(null);
     const [selectedGarment, setSelectedGarment] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [uploadFormVisible, setUploadFormVisible] = useState(false);
+    const [garmentCategory, setGarmentCategory] = useState("");
+    const [bottomsSubCategory, setBottomsSubCategory] = useState("");
+    const [garmentGender, setGarmentGender] = useState("");
+    const [ImageUrl, setImageUrl] = useState("");
+
 
     useEffect(() => {
-        fetchGarments(selectedGender, selectedCategory);
-        fetchModels(selectedGender);
-        fetchSelectedShoes(selectedGender);
-        fetchSelectedFaces(selectedGender);
+        setLoading(true);
+        const fetchData = async () => {
+            try {
+                await Promise.all([
+                    fetchGarments(selectedGender, selectedCategory),
+                    fetchModels(selectedGender),
+                    fetchSelectedShoes(selectedGender),
+                    fetchSelectedFaces(selectedGender),
+                ]);
+
+            } catch (error) {
+                setError(error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+
     }, [selectedGender, selectedCategory]);
+
+    const handleNavigateHome = () => {
+        navigate('/');
+    };
 
     const fetchGarments = (gender, category) => {
         setSelectedCategory(category);
@@ -101,19 +130,19 @@ function PlanOutfit() {
 
     const handleSelectGarment = (garment) => {
         setSelectedGarment(garment);
-        if(!selectedModel){
+        if (!selectedModel) {
             setError("Please selelct a model");
             return;
         }
-        if(!garment.tryon){
+        if (!garment.tryon) {
             setError("Select a garment");
             return;
         }
-        if(garment.tryon.category === "tops" && !selectedBottom){
+        if (garment.tryon.category === "tops" && !selectedBottom) {
             setError("Select a bottom");
             return;
         }
-        if (garment.tryon.category === "bottoms" && !selectedTop){
+        if (garment.tryon.category === "bottoms" && !selectedTop) {
             setError("Select a top");
             return;
         }
@@ -143,23 +172,23 @@ function PlanOutfit() {
             return;
         }
 
-        if(selectedOuterwear && !selectedTop){
+        if (selectedOuterwear && !selectedTop) {
             setError("Select A top")
             return;
         }
-        if(selectedTop &&!selectedBottom){
+        if (selectedTop && !selectedBottom) {
             setError("Select A bottom")
             return;
         }
 
         setError(null);
 
-        const garments= {
+        const garments = {
             tops: selectedTop,
             bottoms: selectedBottom,
         }
-        if(selectedOuterwear){
-            garments.outerwear= selectedOuterwear;
+        if (selectedOuterwear) {
+            garments.outerwear = selectedOuterwear;
         }
         const requestData = {
             garments,
@@ -181,7 +210,13 @@ function PlanOutfit() {
     };
 
     const handleUploadGarment = () => {
-        axios.post("http://localhost:3000/uploadGarment")
+        const garmentData = {
+            category: garmentCategory,
+            bottoms_sub_category: bottomsSubCategory,
+            gender: garmentGender,
+            garment_img_url: ImageUrl,
+        }
+        axios.post("http://localhost:3000/uploadGarment", garmentData)
             .then((response) => {
                 if (response.data) {
                     setError("Garment uploaded successfull");
@@ -206,109 +241,136 @@ function PlanOutfit() {
         setSelectedModelImage(modelImage);
         handleRequestTryOn();
     };
+    const handleVisibleClick = () => {
+        setUploadFormVisible(true)
+    }
 
     return (
         <div className="plan-outfit-container">
-            {error && <div className="error-message">{error}</div>}
-            <div className="left-div">
-                <h2>Plan Your Outfit</h2>
-                {selectedModel && (
-                    <div className="selected-model">
-                        <img src={selectedModelImage} alt={`Model ${selectedModel}`} />
-                    </div>
-                )}
-                <div className="models-container">
-                    <div className="models-wrapper" style={{ transform: `translateX(-${scrollPosition}px)` }}>
+            {loading ? (
+                <div className="loading">loading...</div>
+            ) : (
+                <>
 
-                        {models.map((modelId, index) => (
-                            <div key={modelId} className={`model-card ${selectedModel === modelId ? 'selected' : ''}`} onClick={() => handleSelectModel(modelId, `https://media.revery.ai/generated_model_image/${modelFiles[index]}.png`)}>
-                                <img
-                                    src={`https://media.revery.ai/generated_model_image/${modelFiles[index]}.png`}
-                                    alt={`Model ${modelId}`}
-                                />
-                                {selectedModel === modelId && <div className="selected-overlay"></div>}
+                    {error && <div className="error-message">{error}</div>}
+
+                    <div className="left-div">
+                        <h2>Plan Your Outfit</h2>
+                        {selectedModel && (
+                            <div className="selected-model">
+                                <img src={selectedModelImage} alt={`Model ${selectedModel}`} />
+                            </div>
+                        )}
+                        <div className="models-container">
+                            <div className="models-wrapper" style={{ transform: `translateX(-${scrollPosition}px)` }}>
+
+                                {models.map((modelId, index) => (
+                                    <div key={modelId} className={`model-card ${selectedModel === modelId ? 'selected' : ''}`} onClick={() => handleSelectModel(modelId, `https://media.revery.ai/generated_model_image/${modelFiles[index]}.png`)}>
+                                        <img
+                                            src={`https://media.revery.ai/generated_model_image/${modelFiles[index]}.png`}
+                                            alt={`Model ${modelId}`}
+                                        />
+                                        {selectedModel === modelId && <div className="selected-overlay"></div>}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="garments-container">
+                        <div className="buttons-container">
+                            <div>
+                                <button
+                                    onClick={() => handleGenderChange("male")}
+                                    style={{ fontWeight: selectedGender === "male" ? "bold" : "normal" }}
+                                >
+                                    Male
+                                </button>
+                                <button
+                                    onClick={() => handleGenderChange("female")}
+                                    style={{ fontWeight: selectedGender === "female" ? "bold" : "normal" }}
+                                >
+                                    Female
+                                </button>
+                            </div>
+
+                            <div>
+                                <button
+                                    onClick={() => handleCategoryChange("all")}
+                                    style={{ fontWeight: selectedCategory === "all" ? "bold" : "normal" }}
+                                >
+                                    All
+                                </button>
+                                <button
+                                    onClick={() => handleCategoryChange("tops")}
+                                    style={{ fontWeight: selectedCategory === "tops" ? "bold" : "normal" }}
+                                >
+                                    Tops
+                                </button>
+                                <button
+                                    onClick={() => handleCategoryChange("bottoms")}
+                                    style={{ fontWeight: selectedCategory === "bottoms" ? "bold" : "normal" }}
+                                >
+                                    Bottoms
+                                </button>
+                                <button
+                                    onClick={() => handleCategoryChange("outerwear")}
+                                    style={{ fontWeight: selectedCategory === "outerwear" ? "bold" : "normal" }}
+                                >
+                                    Outerwear
+                                </button>
+                            </div>
+
+                            <div className="selected-garments">
+                                {selectedTop && typeof selectedTop === 'object' && selectedTop.image_urls && selectedTop.image_urls.product_image}
+                                {selectedBottom && typeof selectedBottom === 'object' && selectedBottom.image_urls && selectedBottom.image_urls.product_image}
+                            </div>
+                        </div>
+
+                        {garments.map((garment) => (
+                            <div key={garment.id} className="garment-card" onClick={() => handleSelectGarment(garment)}>
+                                <div>Gender: {garment.gender}</div>
+                                {garment.tryon && <div>Category: {garment.tryon.category}</div>}
+                                {garment.image_urls && garment.image_urls.product_image && (
+                                    <img src={garment.image_urls.product_image} alt={`Garment ${garment.id}`} />
+                                )}
+                                <button onClick={() => handleFetchSpecificGarment(garment)}>View Details</button>
                             </div>
                         ))}
                     </div>
-                </div>
-            </div>
 
-            <div className="garments-container">
-                <div className="buttons-container">
-                    <div>
-                        <button
-                            onClick={() => handleGenderChange("male")}
-                            style={{ fontWeight: selectedGender === "male" ? "bold" : "normal" }}
-                        >
-                            Male
-                        </button>
-                        <button
-                            onClick={() => handleGenderChange("female")}
-                            style={{ fontWeight: selectedGender === "female" ? "bold" : "normal" }}
-                        >
-                            Female
-                        </button>
-                    </div>
-
-                    <div>
-                        <button
-                            onClick={() => handleCategoryChange("all")}
-                            style={{ fontWeight: selectedCategory === "all" ? "bold" : "normal" }}
-                        >
-                            All
-                        </button>
-                        <button
-                            onClick={() => handleCategoryChange("tops")}
-                            style={{ fontWeight: selectedCategory === "tops" ? "bold" : "normal" }}
-                        >
-                            Tops
-                        </button>
-                        <button
-                            onClick={() => handleCategoryChange("bottoms")}
-                            style={{ fontWeight: selectedCategory === "bottoms" ? "bold" : "normal" }}
-                        >
-                            Bottoms
-                        </button>
-                        <button
-                            onClick={() => handleCategoryChange("outerwear")}
-                            style={{ fontWeight: selectedCategory === "outerwear" ? "bold" : "normal" }}
-                        >
-                            Outerwear
-                        </button>
-                        <button
-                            onClick={() => handleCategoryChange("shoes")}
-                            style={{ fontWeight: selectedCategory === "shoes" ? "bold" : "normal" }}
-                        >
-                            Shoes
-                        </button>
-                    </div>
-
-                    <div className="selected-garments">
-                        {selectedTop && typeof selectedTop === 'object' && selectedTop.image_urls && selectedTop.image_urls.product_image}
-                        {selectedBottom && typeof selectedBottom === 'object' && selectedBottom.image_urls && selectedBottom.image_urls.product_image}
-                    </div>
-                </div>
-
-                {garments.map((garment) => (
-                    <div key={garment.id} className="garment-card" onClick={() => handleSelectGarment(garment)}>
-                        <div>Gender: {garment.gender}</div>
-                        {garment.tryon && <div>Category: {garment.tryon.category}</div>}
-                        {garment.image_urls && garment.image_urls.product_image && (
-                            <img src={garment.image_urls.product_image} alt={`Garment ${garment.id}`} />
-                        )}
-                        <button onClick={() => handleFetchSpecificGarment(garment)}>View Details</button>
-                    </div>
-                ))}
-            </div>
-
-            <button onClick={handleUploadGarment}>Upload Garment</button>
-
-            {specificGarment && (
-                <div>
-                    <h2>Specific Garment Details</h2>
-                    <div>Garment ID: {specificGarment.id}</div>
-                </div>
+                    <button onClick={handleVisibleClick}>Upload Garment</button>
+                    {uploadFormVisible && (
+                        <div className="uploadForm">
+                            <h2>Upload New Garment</h2>
+                            <div>
+                                <label htmlFor="category">Category:</label>
+                                <input type="text" id="category" value={garmentCategory} onChange={(e) => setGarmentCategory(e.target.value)} />
+                            </div>
+                            <div>
+                                <label htmlFor="subCategory">Sub Category:</label>
+                                <input type="text" id="subCategory" value={bottomsSubCategory} onChange={(e) => setBottomsSubCategory(e.target.value)} />
+                            </div>
+                            <div>
+                                <label htmlFor="gender">Gender:</label>
+                                <input type="text" id="gender" value={garmentGender} onChange={(e) => setGarmentGender(e.target.value)} />
+                            </div>
+                            <div>
+                                <label htmlFor="imageUrl">Image URL:</label>
+                                <input type="text" id="imageUrl" value={ImageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                            </div>
+                            <button onClick={handleUploadGarment}>Submit</button>
+                        </div>
+                    )}
+                    {specificGarment && (
+                        <div>
+                            <h2>Specific Garment Details</h2>
+                            <div>Garment ID: {specificGarment.id}</div>
+                        </div>
+                    )}
+                </>
             )}
+            <button onClick={handleNavigateHome}><AiFillHome /></button>
         </div>
     );
 }

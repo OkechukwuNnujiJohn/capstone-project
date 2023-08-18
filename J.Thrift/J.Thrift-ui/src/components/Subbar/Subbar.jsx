@@ -18,7 +18,6 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection,
       ? selectedGender.filter((selected) => selected !== gender)
       : [...selectedGender, gender];
     setSelectedGender(updatedSelectedGender);
-    console.log("g", gender);
   };
 
   const handleTopsClick = (category) => {
@@ -98,4 +97,3 @@ export default function Subbar({ handleGenderSelection, handleCategorySelection,
     </div>
   );
 }
-

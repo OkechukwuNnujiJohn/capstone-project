@@ -22,7 +22,6 @@ export default function Navbar({ handleBrandSelection }) {
       ? selectedBrands.filter((selectedBrand) => selectedBrand != brand)
       : [...selectedBrands, brand];
     setSelectedBrands(updatedBrands);
-    console.log("b", brand);
   };
 
   const isBrandSelected = (brand) => {

@@ -1,6 +1,8 @@
 import React from "react";
 import { UserContext, RecommendedContext, ItemsContext } from "../../../UserContext.js";
 import { useState, useEffect, useContext, createContext } from "react";
+import { useNavigate } from 'react-router-dom';
+import { AiFillHome } from "react-icons/ai";
 import "./RecommendationPage.css";
 
 function RecommendationPage({ recommended, items }) {
@@ -8,6 +10,7 @@ function RecommendationPage({ recommended, items }) {
     const { itemscontext, setItemsContext } = useContext(ItemsContext);
     const { user } = useContext(UserContext);
     const [sortedItems, setSortedItems] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         function createSortedItems() {
@@ -16,11 +19,9 @@ function RecommendationPage({ recommended, items }) {
                 const colors = item.color;
                 const brands = item.brand;
                 const keyExists = colors in recommendedcontext.color;
-                console.log(keyExists);
                 if (keyExists) {
                     let score = recommendedcontext.color[colors];
                     score *= 10;
-                    console.log(score)
                     temporarySortedItems[item.id] = score;
                     if (colors in user.favoriteColors) {
                         score += 20
@@ -43,14 +44,13 @@ function RecommendationPage({ recommended, items }) {
                     temporarySortedItems[item.id] += score;
                 }
 
-                if(user.itemsUploaded && user.itemsUploaded.includes(item.id)){
+                if (user.itemsUploaded && user.itemsUploaded.includes(item.id)) {
                     temporarySortedItems[item.id] += 20;
                 }
 
-                if(user.gender === item.gender){
-                    temporarySortedItems[item.id] +=20;
+                if (user.gender === item.gender) {
+                    temporarySortedItems[item.id] += 20;
                 }
-                console.log(temporarySortedItems);
                 const sorr = Object.entries(temporarySortedItems).sort(([, scoreA], [, scoreB]) => (scoreB - scoreA));
                 setSortedItems(sorr);
             });
@@ -58,9 +58,14 @@ function RecommendationPage({ recommended, items }) {
         createSortedItems();
 
     }, []);
+    const handleNavigateHome = () => {
+        navigate('/');
+    };
 
     return (
+
         <div className="recommendedPage">
+            <button onClick={handleNavigateHome}><AiFillHome /></button>
             <div className="item-grid">
                 <h1>Recommended Items</h1>
                 {Object.entries(sortedItems).map(([key, value]) => {
@@ -70,7 +75,6 @@ function RecommendationPage({ recommended, items }) {
                                 return obj;
                             }
                         });
-                        console.log(product);
                         return (
                             <div key={key} className="item-card">
                                 <div className="item-details">

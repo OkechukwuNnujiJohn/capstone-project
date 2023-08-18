@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignupForm.css'
 import { UserContext } from '../../../UserContext.js';
+import logo from './logo.png';
 
 const SignupForm = () => {
   const [first_name, setFirstName] = useState('');
@@ -55,6 +56,9 @@ const SignupForm = () => {
   return (
     <div className="signup-form-container">
       <form className="signup-form" onSubmit={handleSubmit}>
+        <div className="logo-container">
+          <img src={logo} alt="Logo" className="logo" />
+        </div>
         <h2>Sign Up</h2>
         <div className="form-group">
           <label htmlFor="first_name">firstName:</label>

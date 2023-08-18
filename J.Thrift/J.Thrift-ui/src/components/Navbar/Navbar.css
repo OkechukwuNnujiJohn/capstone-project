@@ -4,13 +4,20 @@
   align-items: center;
   padding: 12px 20px;
   z-index: 2;
+  border-radius: 50px;
+  background: #e0e0e0;
+  box-shadow: 20px 20px 60px #bebebe,
+    -20px -20px 60px #ffffff;
 }
 
 .logo {
   position: relative;
   margin-left: 10rem;
-  width: 20px;
-  height: 20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 40px;
+  box-shadow: 20px 20px 60px #bebebe,
+    -20px -20px 60px #ffffff;
 }
 
 .navbar-icons {
